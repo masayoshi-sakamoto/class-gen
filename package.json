@@ -1,12 +1,9 @@
 {
-  "name": "class-gen",
-  "version": "1.0.0",
+  "name": "@masayoshi-sakamoto/class-gen",
+  "version": "1.0.8",
   "bin": {
-    "class-gen": "dist/index.js"
+    "class-gen": "./bin/class-gen.js"
   },
-  "files": [
-    "dist"
-  ],
   "license": "MIT",
   "dependencies": {
     "commander": "^5.0.0",

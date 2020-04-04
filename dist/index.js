@@ -4,8 +4,9 @@ const path = require('path');
 const commander = require('commander');
 const ejs = require('ejs');
 const inflector = require('./lib/inflector');
+var pkg = require('../package.json');
 try {
-    commander.version('0.0.1').option('-d, --dist [dist]', 'output directory');
+    commander.version(pkg.version).option('-d, --dist [dist]', 'output directory').option('-n, --name [name]', 'application name');
     commander.command('entity [className]').action((className) => {
         entities(className);
     });
@@ -14,27 +15,24 @@ try {
     });
     commander
         .command('gateway [className]')
-        .option('-n --name [appName]')
-        .action((className, options) => {
-        gateways(className, options);
+        .action((className) => {
+        gateways(className);
     });
     commander
         .command('infra [className]')
-        .option('-n --name [appName]')
-        .action((className, options) => {
-        infrastructure(className, options);
+        .action((className) => {
+        infrastructure(className);
     });
     commander.command('store [className]').action((className) => {
         store(className);
     });
     commander
         .command('generate [className]')
-        .option('-n --name [appName]')
-        .action((className, options) => {
+        .action((className) => {
         entities(className);
         repositories(className);
-        gateways(className, options);
-        infrastructure(className, options);
+        gateways(className);
+        infrastructure(className);
         store(className);
     });
     commander.parse(process.argv);
@@ -80,12 +78,12 @@ function repositories(className) {
     const name = className.charAt(0).toUpperCase() + className.slice(1);
     generator({ type, dist, name, outfile: name + 'Repository', options: { name } });
 }
-function gateways(className, options) {
+function gateways(className) {
     const type = 'gateways';
-    options.appName = !options.appName ? 'application' : options.appName;
+    commander.name = commander.name === undefined ? 'application' : commander.name;
     const name = className.charAt(0).toUpperCase() + className.slice(1);
     const names = inflector.pluralize(name);
-    const appName = options.appName.charAt(0).toUpperCase() + options.appName.slice(1);
+    const appName = commander.name.charAt(0).toUpperCase() + commander.name.slice(1);
     initialize();
     const gateway = makeDir(makeDir(commander.dist, type), appName);
     const translator = makeDir(gateway, 'translator');
@@ -99,12 +97,12 @@ function gateways(className, options) {
         options: { name, names, appName }
     });
 }
-function infrastructure(className, options) {
+function infrastructure(className) {
     const type = 'infrastructure';
-    options.appName = !options.appName ? 'application' : options.appName;
+    commander.name = !commander.name ? 'application' : commander.name;
     const name = className.charAt(0).toUpperCase() + className.slice(1);
     const names = inflector.pluralize(name);
-    const appName = options.appName.charAt(0).toUpperCase() + options.appName.slice(1);
+    const appName = commander.name.charAt(0).toUpperCase() + commander.name.slice(1);
     initialize();
     const dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'network'), appName), 'requests');
     generator({ type, dist, name, outfile: name.toLowerCase(), options: { name, names, appName } });
