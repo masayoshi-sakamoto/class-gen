@@ -1,0 +1,58 @@
+import { <%= appName %>, <%= name %>Seed } from '@/infrastructure/network/<%= appName %>/schema'
+import { APIRequest } from '@/infrastructure/network/APIRequest'
+import { HTTPMethod } from '@/infrastructure/network/types'
+
+export class Get<%= name %> implements APIRequest<<%= appName %>.<%= name %>.get<%= name %>Response> {
+  response: <%= appName %>.<%= name %>.get<%= name %>Response
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.GET
+  constructor(<%= name.toLowerCase() %>Id: string) {
+    this.path = `/<%= names.toLowerCase() %>/${<%= name.toLowerCase() %>Id}`
+  }
+}
+
+export class Get<%= names %> implements APIRequest<<%= appName %>.<%= name %>.get<%= names %>Response> {
+  response: <%= appName %>.<%= name %>.get<%= names %>Response
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.GET
+  constructor() {
+    this.path = '/<%= names.toLowerCase() %>'
+  }
+}
+
+export class Post<%= name %> implements APIRequest<<%= appName %>.<%= name %>.post<%= name %>Response> {
+  response: <%= appName %>.<%= name %>.post<%= name %>Response
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.POST
+  params: <%= appName %>.<%= name %>.post<%= name %>Request
+  constructor(params: <%= name %>Seed) {
+    this.params = params
+    this.path = '/<%= names.toLowerCase() %>'
+  }
+}
+
+export class Put<%= name %> implements APIRequest<<%= appName %>.<%= name %>.put<%= name %>Response> {
+  response: <%= appName %>.<%= name %>.put<%= name %>Response
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.PUT
+  params: <%= appName %>.<%= name %>.put<%= name %>Request
+  constructor(params: <%= name %>Seed) {
+    const <%= name.toLowerCase() %>Id = params.id
+    this.params = params
+    this.path = `/<%= names.toLowerCase() %>/${<%= name.toLowerCase() %>Id}`
+  }
+}
+
+export class Delete<%= name %> implements APIRequest<<%= appName %>.<%= name %>.delete<%= name %>Response> {
+  response: <%= appName %>.<%= name %>.delete<%= name %>Response
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.DELETE
+  constructor(<%= name.toLowerCase() %>Id: string) {
+    this.path = `/<%= names.toLowerCase() %>/${<%= name.toLowerCase() %>Id}`
+  }
+}

@@ -1,0 +1,33 @@
+import { Store } from 'vuex'
+import { RootState } from '@/store'
+import * as types from '@/store/<%= name.toLowerCase() %>/types'
+import <%= name %>Entity, { I<%= name %>Props } from '@/entities/<%= name %>'
+
+export default class <%= name %>Repository {
+  private _store: Store<RootState>
+
+  constructor(store: Store<RootState>) {
+    this._store = store
+  }
+
+  save(props: I<%= name %>Props[] | I<%= name %>Props) {
+    if (!Array.isArray(props)) {
+      props = [props]
+    }
+    this._store.commit(new types.Store(props))
+  }
+
+  all(): <%= name %>Entity[] {
+    const props = this._store.state.<%= name.toLowerCase() %>.byIds
+    return props ? Object.values(props).map((prop) => new <%= name %>Entity(prop)) : []
+  }
+
+  get(id: string): <%= name %>Entity | null {
+    const prop = this._store.state.<%= name.toLowerCase() %>.byIds[id]
+    return prop ? new <%= name %>Entity(prop) : null
+  }
+
+  delete(prop: I<%= name %>Props) {
+    this._store.commit(new types.Remove(prop))
+  }
+}

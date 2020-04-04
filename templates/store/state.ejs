@@ -1,0 +1,13 @@
+import { I<%= name %>Props } from '@/entities/<%= name %>'
+
+export interface I<%= name %>State {
+  byIds: {
+    [id: string]: I<%= name %>Props
+  }
+}
+
+const state = (): I<%= name %>State => ({
+  byIds: {}
+})
+
+export default state

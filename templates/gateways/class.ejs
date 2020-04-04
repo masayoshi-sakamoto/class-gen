@@ -1,0 +1,30 @@
+import { <%= appName %>GatewayBase } from './base'
+import { Get<%= name %>, Get<%= names %>, Post<%= name %>, Put<%= name %>, Delete<%= name %> } from '@/infrastructure/network/<%= appName %>/requests/guide'
+import <%= name %>Entity, { I<%= name %>Props } from '@/entities/<%= name %>'
+import { to<%= name %>Props, to<%= name %>Seed } from '@/gateways/<%= appName %>/translator/guide'
+
+export default class <%= name %> extends <%= appName %>GatewayBase {
+  async Get<%= name %>(id: string): Promise<I<%= name %>Props | null> {
+    const { guide } = await this.apiClient.request(new Get<%= name %>(id))
+    return guide ? to<%= name %>Props(guide) : null
+  }
+
+  async Get<%= names %>(): Promise<I<%= name %>Props[]> {
+    const { guides } = await this.apiClient.request(new Get<%= names %>())
+    return guides ? guides.map((prop) => to<%= name %>Props(prop)) : []
+  }
+
+  async Post<%= name %>(entity: <%= name %>Entity) {
+    const { guide } = await this.apiClient.request(new Post<%= name %>(to<%= name %>Seed(entity.props)))
+    return guide ? to<%= name %>Props(guide) : null
+  }
+
+  async Put<%= name %>(entity: <%= name %>Entity) {
+    const { guide } = await this.apiClient.request(new Put<%= name %>(to<%= name %>Seed(entity.props)))
+    return guide ? to<%= name %>Props(guide) : null
+  }
+
+  async Delete<%= name %>(guideId: string) {
+    await this.apiClient.request(new Delete<%= name %>(guideId))
+  }
+}

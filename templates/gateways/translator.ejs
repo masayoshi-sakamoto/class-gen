@@ -1,0 +1,21 @@
+/* eslint camelcase: 0 */
+import { <%= name %>, <%= name %>Seed } from '@/infrastructure/network/<%= appName %>/schema'
+import { I<%= name %>Props, Empty<%= name %>PropsFactory } from '@/entities/<%= name %>'
+
+export const to<%= name %>Props = (props: <%= name %>): I<%= name %>Props => {
+  if (!props) {
+    return Empty<%= name %>PropsFactory()
+  }
+
+  const { id } = props
+  return {
+    id
+  }
+}
+
+export const to<%= name %>Seed = (props: I<%= name %>Props): <%= name %>Seed => {
+  const { id } = props
+  return {
+    id
+  }
+}

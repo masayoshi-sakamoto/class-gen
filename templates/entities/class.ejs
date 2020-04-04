@@ -1,0 +1,37 @@
+export interface I<%= name %>Props {
+  id: string
+}
+
+export default class <%= name %>Entity {
+  private _props: I<%= name %>Props
+
+  constructor(props: I<%= name %>Props) {
+    this._props = props
+  }
+
+  get props(): I<%= name %>Props {
+    return this._props
+  }
+
+  get id(): string {
+    return this._props.id
+  }
+}
+
+export const Empty<%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
+  id: '',
+  ...props
+})
+
+export const <%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
+  id: 'unique_<%= name.toLowerCase() %>_id',
+  ...props
+})
+
+export const Empty<%= name %>EntityFactory = (props?: Partial<I<%= name %>Props>): <%= name %>Entity => {
+  return new <%= name %>Entity(Empty<%= name %>PropsFactory(props))
+}
+
+export const <%= name %>EntityFactory = (props?: Partial<I<%= name %>Props>): <%= name %>Entity => {
+  return new <%= name %>Entity(<%= name %>PropsFactory(props))
+}
