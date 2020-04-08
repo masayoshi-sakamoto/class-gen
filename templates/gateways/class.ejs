@@ -11,7 +11,7 @@ export default class <%= name %> extends <%= appName %>GatewayBase {
 
   async Get<%= names %>(): Promise<I<%= name %>Props[]> {
     const { <%= names.toLowerCase() %> } = await this.apiClient.request(new Get<%= names %>())
-    return guides ? <%= names.toLowerCase() %>.map((prop) => to<%= name %>Props(prop)) : []
+    return <%= names.toLowerCase() %> ? <%= names.toLowerCase() %>.map((prop) => to<%= name %>Props(prop)) : []
   }
 
   async Post<%= name %>(entity: <%= name %>Entity) {
