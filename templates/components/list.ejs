@@ -1,0 +1,89 @@
+<template>
+  <v-container fluid>
+    <v-btn width="240" color="primary" tile elevation="0" @click.stop="open(null)">
+      <strong>-- タイトル --</strong>
+    </v-btn>
+    <v-row>
+      <v-col cols="12" offset-md="8" md="4">
+        <v-text-field v-model="search" append-icon="mdi-magnify" label="検索ワード" single-line hide-details></v-text-field>
+      </v-col>
+    </v-row>
+    <v-data-table
+      :headers="headers"
+      :items="entities"
+      :page.sync="value.page"
+      :options.sync="options"
+      :items-per-page="value.itemsPerPage"
+      :search="search"
+      hide-default-footer
+      class="hcmj--data-table"
+      @page-count="value.pageCount = $event"
+    >
+      <template v-slot:item.name="{ item }">
+        <span class="hcmj--text-link" @click="open(item)">{{ item.name }}</span>
+      </template>
+    </v-data-table>
+    <v-pagination
+      v-if="value.pageCount > 1"
+      v-model="value.page"
+      :total-visible="7"
+      :length="value.pageCount"
+      class="mt-5 hcmj--pagination"
+    ></v-pagination>
+    <Dialog type="<%= name.toLowerCase() %>" title="-- タイトル --">
+      <Form<%= name %> v-model="seed" @submit="save"></Form<%= name %>>
+    </Dialog>
+  </v-container>
+</template>
+
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+import <%= name %>Entity, { headers, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
+import Dialog from '@/components/molecules/Dialog'
+import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
+import { Options } from '@/entities/Options'
+
+export default Vue.extend({
+  components: {
+    Dialog,
+    Form<%= name %>
+  },
+  props: {
+    entities: {
+      type: Array as PropType<<%= name %>Entity[]>,
+      required: true
+    },
+    value: {
+      type: Object as PropType<Options>,
+      required: true
+    }
+  },
+  data() {
+    return {
+      headers,
+      options: {},
+      search: '',
+      seed: Empty<%= name %>EntityFactory()
+    }
+  },
+  watch: {
+    options: {
+      handler(value) {
+        // TODO: データをAPIから取得してページング処理
+        console.log(value)
+      },
+      deep: true
+    }
+  },
+  methods: {
+    save() {
+      console.log(this.seed)
+      this.$emit('save', this.seed)
+    },
+    open(entity: <%= name %>Entity | null) {
+      this.seed = entity === null ? Empty<%= name %>EntityFactory() : Empty<%= name %>EntityFactory(entity.props)
+      this.App.state.setDialog('<%= name.toLowerCase() %>', true)
+    }
+  }
+})
+</script>

@@ -1,0 +1,24 @@
+<template>
+  <LayoutApp title="-- タイトル --">
+    <List<%= name %> v-model="options" :entities="entities"></List<%= name %>>
+  </LayoutApp>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import LayoutApp from '@/components/organisms/Layout/App'
+import List<%= name %> from '@/components/organisms/List/<%= name %>'
+
+export default Vue.extend({
+  components: {
+    LayoutApp,
+    List<%= name %>
+  },
+  data() {
+    return {
+      entities: this.App.<%= name.toLowerCase() %>.all(),
+      options: { ...this.App.<%= name.toLowerCase() %>.options() }
+    }
+  }
+})
+</script>

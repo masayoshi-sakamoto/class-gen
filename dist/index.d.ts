@@ -5,6 +5,7 @@ declare const ejs: any;
 declare const inflector: any;
 declare var pkg: any;
 declare function initialize(): void;
+declare function initializeSwagger(): void;
 declare function makeDir(dirpath: string, newpath: string): any;
 declare function generator(params: {
     type: string;
@@ -12,6 +13,7 @@ declare function generator(params: {
     filename?: string;
     name: string;
     outfile?: string;
+    ext?: string;
     options: any;
 }): void;
 declare function entities(className: string): void;
@@ -19,3 +21,8 @@ declare function repositories(className: string): void;
 declare function gateways(className: string): void;
 declare function infrastructure(className: string): void;
 declare function store(className: string): void;
+declare function usecase(className: string): void;
+declare function swagger(className: string): void;
+declare function components(className: string): void;
+declare function injector(): void;
+declare function index(): void;

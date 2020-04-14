@@ -1,0 +1,16 @@
+required:
+  - id
+  - title
+  - order
+properties:
+  id:
+    type: string
+    example: "unique_<%= name.toLowerCase() %>_id"
+    nullable: true
+  title:
+    type: string
+    example: "タイトル"
+  order:
+    type: integer
+    format: int32
+    example: 1

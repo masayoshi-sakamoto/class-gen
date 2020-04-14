@@ -1,0 +1,22 @@
+// Repositories
+import AppRepository from '@/repositories/AppRepository'
+<%_ repositories.forEach((file) => {
+  const repository = file.split('.')[0]
+  if (repository !== 'AppRepository') {
+_%>
+import <%= repository %> from '@/repositories/<%= repository %>'
+<%_ }}); _%>
+
+export default (vue: any, store: any, cookies: any) => {
+  vue.prototype.App = {
+    <%_ repositories.forEach((file) => {
+      const repository = file.split('.')[0]
+      if (repository !== 'AppRepository') {
+        const word = repository.split('Repository')[0].toLowerCase()
+    _%>
+    <%= word %>: new <%= repository %>(store),
+    <%_ }}); _%>
+    state: new AppRepository(cookies, store)
+  }
+  vue.prototype.$router = { push: () => {} }
+}

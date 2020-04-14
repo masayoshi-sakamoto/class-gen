@@ -1,0 +1,35 @@
+<%_ files.forEach((file) => {
+  const gateway = file.split('.')[0]
+  const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
+  if (gateway !== 'translator' && gateway !== 'index') {
+_%>
+import <%= Gateway %> from './<%= gateway %>'
+<%_ }}); _%>
+import { APIClient } from '@/infrastructure/network/<%= appName %>/APIClient'
+
+export default class <%= appName %>Gateway {
+  apiClient: APIClient
+  <%_ files.forEach((file) => {
+    const gateway = file.split('.')[0]
+    const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
+    if (gateway !== 'translator' && gateway !== 'index') {
+  _%>
+  <%= Gateway %>: <%= Gateway %>
+  <%_ }}); _%>
+
+  constructor(apiClient: APIClient) {
+    this.apiClient = apiClient
+    <%_ files.forEach((file) => {
+      const gateway = file.split('.')[0]
+      const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
+      if (gateway !== 'translator' && gateway !== 'index') {
+    _%>
+    this.<%= Gateway %> = new <%= Gateway %>(apiClient)
+    <%_ }}); _%>
+  }
+}
+
+export const <%= appName %>GatewayFactory = (): <%= appName %>Gateway => {
+  const apiClient = new APIClient()
+  return new <%= appName %>Gateway(apiClient)
+}

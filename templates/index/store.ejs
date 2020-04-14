@@ -1,0 +1,35 @@
+import Vuex from 'vuex'
+<%_ files.forEach((file) => {
+  const store = file.split('.')[0]
+  const Store = store.charAt(0).toUpperCase() + store.slice(1)
+  if (store !== 'index') {
+_%>
+import * as <%= store %> from '@/store/<%= store %>'
+<%_ }}); _%>
+
+export interface RootState {
+  <%_ files.forEach((file) => {
+    const store = file.split('.')[0]
+    const Store = store.charAt(0).toUpperCase() + store.slice(1)
+    if (store !== 'index') {
+  _%>
+  <%= store %>: <%= store %>.I<%= Store %>State
+  <%_ }}); _%>
+}
+
+const createStore = () => {
+  return new Vuex.Store<RootState>({
+    modules: {
+      <%_ files.forEach((file) => {
+        const store = file.split('.')[0]
+        const Store = store.charAt(0).toUpperCase() + store.slice(1)
+        if (store !== 'index' && store !== 'app') {
+      _%>
+      <%= store %>: <%= store %>.store,
+      <%_ }}); _%>
+      app: app.store
+    }
+  })
+}
+
+export default createStore

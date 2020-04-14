@@ -1,0 +1,80 @@
+get:
+  tags:
+    - <%= name %>
+  operationId: get<%= name %>
+  description: Get <%= name %>
+  parameters:
+    - in: path
+      name: <%= name.toLowerCase() %>Id
+      schema:
+        type: string
+        example: unique_<%= name.toLowerCase() %>_id
+      required: true
+      description: <%= name %> ID
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - <%= name.toLowerCase() %>
+            type: object
+            properties:
+              <%= name.toLowerCase() %>:
+                $ref: "#/components/schemas/<%= name %>"
+put:
+  tags:
+    - <%= name %>
+  operationId: put<%= name %>
+  description: Put <%= name %>
+  parameters:
+    - in: path
+      name: <%= name.toLowerCase() %>Id
+      schema:
+        type: string
+        example: unique_<%= name.toLowerCase() %>_id
+      required: true
+      description: <%= name %> ID
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/<%= name %>Seed"
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - <%= name.toLowerCase() %>
+            type: object
+            properties:
+              <%= name.toLowerCase() %>:
+                $ref: "#/components/schemas/<%= name %>"
+delete:
+  tags:
+    - <%= name %>
+  operationId: delete<%= name %>
+  description: Delete <%= name %>
+  parameters:
+    - in: path
+      name: <%= name.toLowerCase() %>Id
+      schema:
+        type: string
+        example: unique_<%= name.toLowerCase() %>_id
+      required: true
+      description: <%= name %> ID
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - <%= name.toLowerCase() %>
+            type: object
+            properties:
+              <%= name.toLowerCase() %>:
+                $ref: "#/components/schemas/<%= name %>"                

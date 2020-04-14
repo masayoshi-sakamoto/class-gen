@@ -1,0 +1,41 @@
+get:
+  tags:
+    - <%= name %>
+  operationId: get<%= names %>
+  description: Get <%= names %>
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - <%= names.toLowerCase() %>
+            type: object
+            properties:
+              <%= names.toLowerCase() %>:
+                type: array
+                items:
+                  $ref: "#/components/schemas/<%= name %>"
+post:
+  tags:
+    - <%= name %>
+  operationId: post<%= name %>
+  description: Post <%= name %>
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/<%= name %>Seed"
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - <%= name.toLowerCase() %>
+            type: object
+            properties:
+              <%= name.toLowerCase() %>:
+                $ref: "#/components/schemas/<%= name %>"

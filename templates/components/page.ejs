@@ -1,0 +1,65 @@
+<template>
+  <<%= name %> :value="entities" title="-- タイトル --" @save="save" @destroy="destroy" @update="update"></<%= name %>>
+</template>
+
+<script lang="ts">
+import Vue from 'vue'
+import initialize from '@/middleware/initialize'
+import authenticated from '@/middleware/authenticated'
+import <%= name %> from '@/components/templates/<%= name %>'
+import Fetch<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Fetch<%= names %>UseCase'
+import Save<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Save<%= name %>UseCase'
+import Delete<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Delete<%= name %>UseCase'
+import Update<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Update<%= names %>UseCase'
+import <%= name %>Entity from '@/entities/<%= name %>'
+
+interface IData {
+  entities: <%= name %>Entity[]
+}
+
+export default Vue.extend({
+  middleware: [initialize, authenticated],
+  components: {
+    <%= name %>
+  },
+  async fetch({ App }) {
+    const usecase1 = new Fetch<%= names %>UseCase(App)
+    await Promise.all([usecase1.execute()])
+  },
+  data(): IData {
+    return {
+      entities: this.App.<%= name.toLowerCase() %>.all()
+    }
+  },
+  methods: {
+    async save(entity: <%= name %>Entity) {
+      const usecase = new Save<%= name %>UseCase(this.App)
+      this.App.state.loading = true
+      if (await usecase.execute(entity)) {
+        this.entities = this.App.<%= name.toLowerCase() %>.all()
+        this.App.state.setDialog('<%= name.toLowerCase() %>', false)
+      }
+      this.App.state.loading = false
+    },
+    async destroy(entity: <%= name %>Entity) {
+      const usecase = new Delete<%= name %>UseCase(this.App)
+      this.App.state.loading = true
+      await usecase.execute(entity)
+      this.entities = this.App.<%= name.toLowerCase() %>.all()
+      this.App.state.loading = false
+    },
+    async update(entities: <%= name %>Entity[]) {
+      const usecase = new Update<%= names %>UseCase(this.App)
+      this.App.state.loading = true
+      await usecase.execute(entities)
+      this.entities = this.App.<%= name.toLowerCase() %>.all()
+      this.App.state.loading = false
+    }
+  },
+  head() {
+    return {
+      title: '-- タイトル --'
+    }
+  }
+})
+</script>

@@ -1,0 +1,59 @@
+/* eslint-disable */
+import { Context } from '@nuxt/types/app'
+import Vue from 'vue'
+
+import { APIClient as <%= appName %>APIClient } from '@/infrastructure/network/<%= appName %>/APIClient'
+
+// Repositories
+import AppRepository from '@/repositories/AppRepository'
+<%_ repositories.forEach((file) => {
+  const repository = file.split('.')[0]
+  if (repository !== 'AppRepository') {
+_%>
+import <%= repository %> from '@/repositories/<%= repository %>'
+<%_ }}); _%>
+
+// Gateways
+import <%= appName %>Gateway from '@/gateways/<%= appName %>'
+
+// Services
+import LogService from '@/services/LogService'
+
+// FIXME
+const dummyLogger = {
+  captureException(params: Error | string) {
+    console.log('/// logging with dummy logger ///')
+    console.log(params)
+  }
+}
+
+export default (ctx: Context) => {
+  const { store, app } = ctx
+  const <%= appName.toLowerCase() %>APIClient = new <%= appName %>APIClient(ctx)
+
+  Vue.prototype.App = {
+    state: new AppRepository(app.$cookies, store),
+    <%_ repositories.forEach((file) => {
+      const repository = file.split('.')[0]
+      if (repository !== 'AppRepository') {
+        const word = repository.split('Repository')[0].toLowerCase()
+    _%>
+    <%= word %>: new <%= repository %>(store),
+    <%_ }}); _%>
+    <%= appName.toLowerCase() %>Gateway: new <%= appName %>Gateway(<%= appName.toLowerCase() %>APIClient),
+    logService: new LogService(dummyLogger /* app.$sentry */)
+  }
+
+  ctx.App = {
+    state: new AppRepository(app.$cookies, store),
+    <%_ repositories.forEach((file) => {
+      const repository = file.split('.')[0]
+      if (repository !== 'AppRepository') {
+        const word = repository.split('Repository')[0].toLowerCase()
+    _%>
+    <%= word %>: new <%= repository %>(store),
+    <%_ }}); _%>
+    <%= appName.toLowerCase() %>Gateway: new <%= appName %>Gateway(<%= appName.toLowerCase() %>APIClient),
+    logService: new LogService(dummyLogger /* app.$sentry */)
+  }
+}
