@@ -3,15 +3,9 @@ import { Context } from '@nuxt/types/app'
 
 // Repositories
 import AppRepository from '@/repositories/AppRepository'
-<%_ repositories.forEach((file) => {
-  const repository = file.split('.')[0]
-  if (repository !== 'AppRepository') {
-_%>
-import <%= repository %> from '@/repositories/<%= repository %>'
-<%_ }}); _%>
 
 // Gateways
-import <%= appName %>Gateway from '@/gateways/<%= appName %>'
+import QifGateway from '@/gateways/Qif'
 
 // Services
 import LogService from '@/services/LogService'
@@ -27,16 +21,9 @@ export interface IApp {
   state: AppRepository
 
   // Repositories
-  <%_ repositories.forEach((file) => {
-    const repository = file.split('.')[0]
-    if (repository !== 'AppRepository') {
-      const word = repository.split('Repository')[0].toLowerCase()
-  _%>
-  <%= word %>: <%= repository %>
-  <%_ }}); _%>
 
   // Gateways
-  universityGateway: <%= appName %>Gateway
+  universityGateway: QifGateway
 
   // Services
   logService: LogService

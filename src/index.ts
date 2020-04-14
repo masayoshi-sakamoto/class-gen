@@ -6,7 +6,7 @@ const inflector = require('./lib/inflector')
 var pkg = require('../package.json');
 
 try {
-  commander.version(pkg.version).option('-d, --dist [dist]', 'output directory').option('-n, --name [appname]', 'application name')
+  commander.version(pkg.version).option('-d, --dist <dist>', 'output directory').option('-a, --appname <appname>', 'application name')
 
   commander.command('entity [className]').action((className: string) => {
     if (!className) {
