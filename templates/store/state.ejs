@@ -1,13 +1,21 @@
 import { I<%= name %>Props } from '@/entities/<%= name %>'
+import { Options } from '@/entities/Options'
 
 export interface I<%= name %>State {
   byIds: {
     [id: string]: I<%= name %>Props
   }
+  options: Options
 }
 
 const state = (): I<%= name %>State => ({
   byIds: {}
+  options: {
+    total: 0,
+    page: 1,
+    itemsPerPage: 20,
+    pageCount: 0
+  }
 })
 
 export default state

@@ -1,7 +1,7 @@
 <%_ files.forEach((file) => {
   const gateway = file.split('.')[0]
   const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
-  if (gateway !== 'translator' && gateway !== 'index') {
+  if (gateway !== 'translator' && gateway !== 'index' && gateway !== 'base') {
 _%>
 import <%= Gateway %> from './<%= gateway %>'
 <%_ }}); _%>
@@ -12,7 +12,7 @@ export default class <%= appName %>Gateway {
   <%_ files.forEach((file) => {
     const gateway = file.split('.')[0]
     const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
-    if (gateway !== 'translator' && gateway !== 'index') {
+    if (gateway !== 'translator' && gateway !== 'index' && gateway !== 'base') {
   _%>
   <%= Gateway %>: <%= Gateway %>
   <%_ }}); _%>
@@ -22,7 +22,7 @@ export default class <%= appName %>Gateway {
     <%_ files.forEach((file) => {
       const gateway = file.split('.')[0]
       const Gateway = gateway.charAt(0).toUpperCase() + gateway.slice(1)
-      if (gateway !== 'translator' && gateway !== 'index') {
+      if (gateway !== 'translator' && gateway !== 'index' && gateway !== 'base') {
     _%>
     this.<%= Gateway %> = new <%= Gateway %>(apiClient)
     <%_ }}); _%>

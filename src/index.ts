@@ -159,19 +159,20 @@ function gateways(className: string) {
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
+  const title = commander.title === undefined ? 'title' : commander.title
 
   initialize()
   const gateway = makeDir(makeDir(commander.dist, type), appName)
   const translator = makeDir(gateway, 'translator')
 
-  generator({ type, dist: gateway, name, outfile: name.toLowerCase(), options: { name, names, appName } })
+  generator({ type, dist: gateway, name, outfile: name.toLowerCase(), options: { name, names, appName, title } })
   generator({
     type,
     dist: translator,
     name,
     outfile: name.toLowerCase(),
     filename: 'translator',
-    options: { name, names, appName }
+    options: { name, names, appName, title }
   })
 
   type = 'index'

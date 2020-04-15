@@ -1,7 +1,8 @@
 import { Store } from 'vuex'
 import { RootState } from '@/store'
 import * as types from '@/store/<%= name.toLowerCase() %>/types'
-import <%= name %>Entity, { I<%= name %>Props } from '@/entities/<%= name %>'
+import <%= name %>Entity, { I<%= name %>Props, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
+import { Options } from '@/entities/Options'
 
 export default class <%= name %>Repository {
   private _store: Store<RootState>
@@ -10,21 +11,21 @@ export default class <%= name %>Repository {
     this._store = store
   }
 
-  save(props: I<%= name %>Props[] | I<%= name %>Props) {
+  save(props: I<%= name %>Props[] | I<%= name %>Props, options: Options) {
     if (!Array.isArray(props)) {
       props = [props]
     }
-    this._store.commit(new types.Store(props))
+    this._store.commit(new types.Store({ items, options }))
   }
 
   all(): <%= name %>Entity[] {
     const props = this._store.state.<%= name.toLowerCase() %>.byIds
-    return props ? Object.values(props).map((prop) => new <%= name %>Entity(prop)) : []
+    return props ? Object.values(props).map((prop) => Empty<%= name %>EntityFactory(prop)) : []
   }
 
-  get(id: string): <%= name %>Entity | null {
+  get(id: string): <%= name %>Entity {
     const prop = this._store.state.<%= name.toLowerCase() %>.byIds[id]
-    return prop ? new <%= name %>Entity(prop) : null
+    return prop ? Empty<%= name %>EntityFactory(prop) : Empty<%= name %>EntityFactory()
   }
 
   delete(prop: I<%= name %>Props) {

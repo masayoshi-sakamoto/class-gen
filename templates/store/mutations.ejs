@@ -5,17 +5,19 @@ import { Types, Store, Remove } from '@/store/<%= name.toLowerCase() %>/types'
 
 const mutations: MutationTree<I<%= name %>State> = {
   [Types.store]: (state, action: Store) => {
-    const props = action.payload
-    if (props.length === 0) {
+    const { items, options } = action.payload
+    if (items === []) {
       delete state.byIds
-      state.byIds = {}
+      state.byIds = init().byIds
+      state.options = init().options
     } else {
-      props.forEach((prop) => {
+      items.forEach((prop) => {
         state.byIds = {
           ...state.byIds,
           [prop.id]: prop
         }
       })
+      state.options = options
     }
   },
   [Types.remove]: (state, action: Remove) => {

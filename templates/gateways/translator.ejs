@@ -7,15 +7,17 @@ export const to<%= name %>Props = (props: <%= name %>): I<%= name %>Props => {
     return Empty<%= name %>PropsFactory()
   }
 
-  const { id } = props
+  const { id, <%= title %> } = props
   return {
     id
+    <%= title %>
   }
 }
 
 export const to<%= name %>Seed = (props: I<%= name %>Props): <%= name %>Seed => {
-  const { id } = props
+  const { id, <%= title %> } = props
   return {
     id
+    <%= title %>
   }
 }
