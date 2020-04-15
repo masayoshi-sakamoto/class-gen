@@ -92,5 +92,5 @@ openapi
 #vscode
 .vscode
 
-app
-swagger
+/app
+/swagger
