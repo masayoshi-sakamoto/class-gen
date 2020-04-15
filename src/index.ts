@@ -22,6 +22,7 @@ try {
       return
     }
     repositories(className)
+    injector()
   })
 
   commander.command('gateway [className]').action((className: string) => {
@@ -91,7 +92,6 @@ try {
       usecase(className)
       swagger(className)
       components(className)
-      injector()
     })
 
   commander.parse(process.argv)
@@ -150,7 +150,7 @@ function repositories(className: string) {
 }
 
 function gateways(className: string) {
-  const type = 'gateways'
+  let type = 'gateways'
   commander.appname = commander.appname === undefined ? 'application' : commander.appname
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const names = inflector.pluralize(name)
@@ -169,6 +169,13 @@ function gateways(className: string) {
     filename: 'translator',
     options: { name, names, appName }
   })
+
+  type = 'index'
+  const read = makeDir(makeDir(commander.dist, 'gateways'), appName)
+  const files = fs.readdirSync(read)
+  const dist = read
+  generator({ type, dist, name: '', outfile: 'index', filename: 'gateways', options: { files, appName } })
+
 }
 
 function infrastructure(className: string) {
@@ -184,15 +191,23 @@ function infrastructure(className: string) {
 }
 
 function store(className: string) {
-  const type = 'store'
+  let type = 'store'
+  commander.appname = !commander.appname ? 'application' : commander.appname
   const name = className.charAt(0).toUpperCase() + className.slice(1)
+  const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
   initialize()
-  const dist = makeDir(makeDir(commander.dist, type), name.toLowerCase())
+  let dist = makeDir(makeDir(commander.dist, type), name.toLowerCase())
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name } })
   generator({ type, dist, name, outfile: 'mutations', filename: 'mutations', options: { name } })
   generator({ type, dist, name, outfile: 'state', filename: 'state', options: { name } })
   generator({ type, dist, name, outfile: 'types', filename: 'types', options: { name } })
+
+  type = 'index'
+  const read = makeDir(commander.dist, 'store')
+  const files = fs.readdirSync(read)
+  dist = read
+  generator({ type, dist, name: '', outfile: 'index', filename: 'store', options: { files, appName } })
 }
 
 function usecase(className: string) {
@@ -225,6 +240,29 @@ function swagger(className: string) {
   dist = makeDir(makeDir(makeDir(type, 'src'), 'paths'), names.toLowerCase())
   generator({ ext: '.yml', type, dist, name, outfile: 'path', filename: 'path', options: { name, names, appName } })
   generator({ ext: '.yml', type, dist, name, outfile: 'paths', filename: 'paths', options: { name, names, appName } })
+
+  let read = makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas')
+  let files: string[] = fs.readdirSync(read)
+  let paths = {}
+  files.forEach((file) => {
+    if (file === 'index.yml') return
+    const read = makeDir(makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas'), file)
+    paths[file] = fs.readdirSync(read)
+  })
+  dist = read
+  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'schemas.index', options: { paths, name, names, appName } })
+
+  read = makeDir(makeDir(type, 'src'), 'paths')
+  files = fs.readdirSync(read)
+  paths = {}
+  files.forEach((file) => {
+    if (file === 'index.yml') return
+    const read = makeDir(makeDir(makeDir(type, 'src'), 'paths'), file)
+    paths[file] = fs.readdirSync(read)
+  })
+  dist = read
+  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'paths.index', options: { paths, name, names, appName } })
+
 }
 
 function components(className: string) {

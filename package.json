@@ -1,6 +1,6 @@
 {
   "name": "@masayoshi-sakamoto/class-gen",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "bin": {
     "class-gen": "./bin/class-gen.js"
   },

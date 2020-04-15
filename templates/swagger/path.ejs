@@ -5,7 +5,7 @@ get:
   description: Get <%= name %>
   parameters:
     - in: path
-      name: <%= name.toLowerCase() %>Id
+      name: id
       schema:
         type: string
         example: unique_<%= name.toLowerCase() %>_id
@@ -30,7 +30,7 @@ put:
   description: Put <%= name %>
   parameters:
     - in: path
-      name: <%= name.toLowerCase() %>Id
+      name: id
       schema:
         type: string
         example: unique_<%= name.toLowerCase() %>_id
@@ -60,7 +60,7 @@ delete:
   description: Delete <%= name %>
   parameters:
     - in: path
-      name: <%= name.toLowerCase() %>Id
+      name: id
       schema:
         type: string
         example: unique_<%= name.toLowerCase() %>_id

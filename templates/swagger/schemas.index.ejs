@@ -1,0 +1,17 @@
+<%_ Object.entries(paths).forEach(([key, values]) => {
+  const ClassName = key.charAt(0).toUpperCase() + key.slice(1)
+_%>
+<%_ values.forEach((file) => {
+    const fileName = file.split('.')[0]
+    const FileName = fileName.charAt(0).toUpperCase() + fileName.slice(1)
+_%>
+<%_ if (fileName === 'index') {_%>
+<%= ClassName %>:
+  $ref: './<%= key %>/index.yml'
+<%_ } else {_%>
+<%= ClassName %><%= FileName %>:
+  $ref: './<%= key %>/<%= fileName %>.yml'
+<%_ } _%>
+<%_ }); _%>
+
+<%_ }); _%>
