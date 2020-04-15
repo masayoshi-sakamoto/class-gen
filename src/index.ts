@@ -211,7 +211,7 @@ function store(className: string) {
 }
 
 function usecase(className: string) {
-  const type = 'usecase'
+  const type = 'usecases'
   commander.appname = !commander.appname ? 'application' : commander.appname
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const names = inflector.pluralize(name)

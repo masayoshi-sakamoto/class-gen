@@ -183,7 +183,7 @@ function store(className) {
     generator({ type, dist, name: '', outfile: 'index', filename: 'store', options: { files, appName } });
 }
 function usecase(className) {
-    const type = 'usecase';
+    const type = 'usecases';
     commander.appname = !commander.appname ? 'application' : commander.appname;
     const name = className.charAt(0).toUpperCase() + className.slice(1);
     const names = inflector.pluralize(name);
