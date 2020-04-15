@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
-import { I<%= name %>State } from '@/store/<%= name.toLowerCase() %>'
+import { I<%= name %>State, state as init } from '@/store/<%= name.toLowerCase() %>'
 import { Types, Store, Remove } from '@/store/<%= name.toLowerCase() %>/types'
 
 const mutations: MutationTree<I<%= name %>State> = {

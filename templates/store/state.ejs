@@ -5,11 +5,11 @@ export interface I<%= name %>State {
   byIds: {
     [id: string]: I<%= name %>Props
   }
-  options: Options
+  options: Options | undefined
 }
 
-const state = (): I<%= name %>State => ({
-  byIds: {}
+export const state = (): I<%= name %>State => ({
+  byIds: {},
   options: {
     total: 0,
     page: 1,

@@ -1,4 +1,5 @@
 import { I<%= name %>Props } from '@/entities/<%= name %>'
+import { Options } from '@/entities/Options'
 
 export const Types = {
   store: 'store',
@@ -7,9 +8,9 @@ export const Types = {
 
 export const path = '<%= name.toLowerCase() %>/'
 
-export class Store implements FluxStandardAction<{ I<%= name %>Props[]; options: Options }> {
+export class Store implements FluxStandardAction<{ items: I<%= name %>Props[]; options?: Options }> {
   type = path + Types.store
-  constructor(public payload: { items: I<%= name %>Props[]; options: Options }) {}
+  constructor(public payload: { items: I<%= name %>Props[]; options?: Options }) {}
 }
 
 export class Remove implements FluxStandardAction<I<%= name %>Props> {

@@ -1,6 +1,7 @@
 export interface I<%= name %>Props {
   id: string
   <%= title %>: string
+  order: number
 }
 
 export default class <%= name %>Entity {
@@ -21,6 +22,10 @@ export default class <%= name %>Entity {
   get <%= title %>(): string {
     return this._props.<%= title %>
   }
+
+  get order(): number {
+    return this._props.order
+  }
 }
 
 export const headers = [
@@ -31,12 +36,14 @@ export const headers = [
 export const Empty<%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
   id: '',
   <%= title %>: '',
+  order: 0,
   ...props
 })
 
 export const <%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
   id: 'unique_<%= name.toLowerCase() %>_id',
   <%= title %>: 'タイトル',
+  order: 1,
   ...props
 })
 
