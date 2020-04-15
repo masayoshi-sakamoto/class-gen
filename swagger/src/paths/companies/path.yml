@@ -1,0 +1,80 @@
+get:
+  tags:
+    - Company
+  operationId: getCompany
+  description: Get Company
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+        example: unique_company_id
+      required: true
+      description: Company ID
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - company
+            type: object
+            properties:
+              company:
+                $ref: "#/components/schemas/Company"
+put:
+  tags:
+    - Company
+  operationId: putCompany
+  description: Put Company
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+        example: unique_company_id
+      required: true
+      description: Company ID
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/CompanySeed"
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - company
+            type: object
+            properties:
+              company:
+                $ref: "#/components/schemas/Company"
+delete:
+  tags:
+    - Company
+  operationId: deleteCompany
+  description: Delete Company
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+        example: unique_company_id
+      required: true
+      description: Company ID
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - company
+            type: object
+            properties:
+              company:
+                $ref: "#/components/schemas/Company"                

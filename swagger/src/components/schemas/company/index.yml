@@ -1,0 +1,15 @@
+required:
+  - id
+  - title
+  - order
+properties:
+  id:
+    type: string
+    example: "unique_company_id"
+  title:
+    type: string
+    example: "タイトル"
+  order:
+    type: integer
+    format: int32
+    example: 1

@@ -6,7 +6,10 @@ const inflector = require('./lib/inflector')
 var pkg = require('../package.json');
 
 try {
-  commander.version(pkg.version).option('-d, --dist <dist>', 'output directory').option('-a, --appname <appname>', 'application name')
+  commander.version(pkg.version)
+    .option('-d, --dist <dist>', 'output directory')
+    .option('-a, --appname <appname>', 'application name')
+    .option('-t, --title <title>', 'title name')
 
   commander.command('entity [className]').action((className: string) => {
     if (!className) {
@@ -138,7 +141,8 @@ function entities(className: string) {
   initialize()
   const dist = makeDir(commander.dist, type)
   const name = className.charAt(0).toUpperCase() + className.slice(1)
-  generator({ type, dist, name, options: { name } })
+  const title = commander.title === undefined ? 'title' : commander.title
+  generator({ type, dist, name, options: { name, title } })
 }
 
 function repositories(className: string) {
@@ -271,6 +275,7 @@ function components(className: string) {
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
+  const title = commander.title === undefined ? 'title' : commander.title
 
   initialize()
   let dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'organisms'), 'Form'), name)
@@ -281,7 +286,7 @@ function components(className: string) {
 
   dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'organisms'), 'List'), name)
   generator({ type, dist, name, outfile: 'fixtures', filename: 'fixtures', options: { name, names, appName } })
-  generator({ type, dist, name, outfile: name + '.story', filename: 'list.story', options: { name, names, appName } })
+  generator({ type, dist, name, outfile: name + '.story', filename: 'list.story', options: { name, names, appName, title } })
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
   generator({ ext: '.vue', type, dist, name, filename: 'list', options: { name, names, appName } })
 

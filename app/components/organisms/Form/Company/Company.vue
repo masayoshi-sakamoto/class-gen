@@ -1,0 +1,71 @@
+<template>
+  <validation-observer ref="observer" v-slot="{ invalid, passes }">
+    <v-form ref="form" @submit.prevent="passes(submit)">
+      <v-alert v-if="App.state.errors.message" dense outlined type="error" class="mt-6 mb-10">
+        {{ App.state.errors.message }}
+      </v-alert>
+      <validation-provider v-slot="{ errors }" rules="required" name="タイトル">
+        <v-text-field
+          v-model="props.title"
+          label="タイトル"
+          :error-messages="App.state.errors.title ? App.state.errors.title : errors[0]"
+          required
+        ></v-text-field>
+      </validation-provider>
+      <div class="text-center">
+        <v-btn min-width="240" type="submit" class="mr-3" color="primary" tile elevation="0" :disabled="invalid">
+          <strong>保存</strong>
+        </v-btn>
+      </div>
+    </v-form>
+  </validation-observer>
+</template>
+
+<script lang="ts">
+import Vue, { PropType } from 'vue'
+import CompanyEntity, { ICompanyProps } from '@/entities/Company'
+
+interface IData {
+  props: ICompanyProps
+}
+
+export default Vue.extend({
+  components: {},
+  props: {
+    create: {
+      type: Boolean,
+      default: false
+    },
+    value: {
+      type: Object as PropType<CompanyEntity>,
+      required: true
+    }
+  },
+  data(): IData {
+    return {
+      props: this.value.props,
+    }
+  },
+  watch: {
+    value: {
+      handler() {
+        this.cancel()
+        this.props = this.value.props
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    submit() {
+      this.$emit('submit', new CompanyEntity(this.props))
+    },
+    cancel() {
+      const observer: any = this.$refs.observer
+      if (observer) {
+        observer.reset()
+      }
+      this.App.state.errors = {}
+    }
+  }
+})
+</script>

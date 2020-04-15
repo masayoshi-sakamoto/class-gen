@@ -1,0 +1,5 @@
+Company:
+  $ref: './company/index.yml'
+CompanySeed:
+  $ref: './company/seed.yml'
+

@@ -1,0 +1,6 @@
+#Companies
+/companies/{id}:
+  $ref: './companies/path.yml'
+/companies:
+  $ref: './companies/paths.yml'
+

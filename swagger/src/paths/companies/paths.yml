@@ -1,0 +1,41 @@
+get:
+  tags:
+    - Company
+  operationId: getCompanies
+  description: Get Companies
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - companies
+            type: object
+            properties:
+              companies:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Company"
+post:
+  tags:
+    - Company
+  operationId: postCompany
+  description: Post Company
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/CompanySeed"
+  responses:
+    '201':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - company
+            type: object
+            properties:
+              company:
+                $ref: "#/components/schemas/Company"

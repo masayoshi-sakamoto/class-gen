@@ -1,5 +1,6 @@
 export interface I<%= name %>Props {
   id: string
+  <%= title %>: string
 }
 
 export default class <%= name %>Entity {
@@ -16,15 +17,26 @@ export default class <%= name %>Entity {
   get id(): string {
     return this._props.id
   }
+
+  get <%= title %>(): string {
+    return this._props.<%= title %>
+  }
 }
+
+export const headers = [
+  { text: 'ID', value: 'id' },
+  { text: 'タイトル', value: '<%= title %>' }
+]
 
 export const Empty<%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
   id: '',
+  <%= title %>: '',
   ...props
 })
 
 export const <%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({
   id: 'unique_<%= name.toLowerCase() %>_id',
+  <%= title %>: 'タイトル',
   ...props
 })
 

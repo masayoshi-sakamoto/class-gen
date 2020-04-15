@@ -12,17 +12,17 @@ Vue.use(Vuex)
 Vue.use(Vuetify)
 
 const entities = [
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id1', title: 'タイトル1' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id2', title: 'タイトル2' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id3', title: 'タイトル3' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id4', title: 'タイトル4' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id5', title: 'タイトル5' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id6', title: 'タイトル6' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id7', title: 'タイトル7' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id8', title: 'タイトル8' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id9', title: 'タイトル9' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id10', title: 'タイトル10' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', title: 'タイトル11' })
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id1', <%= title %>: 'タイトル1' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id2', <%= title %>: 'タイトル2' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id3', <%= title %>: 'タイトル3' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id4', <%= title %>: 'タイトル4' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id5', <%= title %>: 'タイトル5' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id6', <%= title %>: 'タイトル6' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id7', <%= title %>: 'タイトル7' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id8', <%= title %>: 'タイトル8' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id9', <%= title %>: 'タイトル9' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id10', <%= title %>: 'タイトル10' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', <%= title %>: 'タイトル11' })
 ]
 
 export default {

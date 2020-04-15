@@ -4,7 +4,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import initialize from '@/middleware/initialize'
 import authenticated from '@/middleware/authenticated'
 import <%= name %> from '@/components/templates/<%= name %>'
 import Fetch<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Fetch<%= names %>UseCase'
@@ -18,7 +17,7 @@ interface IData {
 }
 
 export default Vue.extend({
-  middleware: [initialize, authenticated],
+  middleware: [authenticated],
   components: {
     <%= name %>
   },
