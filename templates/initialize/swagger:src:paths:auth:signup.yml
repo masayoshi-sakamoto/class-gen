@@ -1,0 +1,22 @@
+post:
+  tags:
+    - Auth
+  operationId: authSignup
+  description: Auth Signup
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/schemas/Signup"  
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - login
+            type: object
+            properties:
+              login:
+                $ref: "#/components/schemas/Auth"

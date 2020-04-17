@@ -1,0 +1,19 @@
+required:
+  - username
+  - password
+  - email
+  - name
+type: "object"
+properties:
+  username:
+    type: string
+    example: 'username'
+  password:
+    type: string
+    example: 'password'
+  email:
+    type: string
+    example: 'username@example.com'
+  name:
+    type: string
+    example: 'ログインユーザー'

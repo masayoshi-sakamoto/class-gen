@@ -1,0 +1,17 @@
+get:
+  tags:
+    - Auth
+  operationId: getMe
+  description: Auth me
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - me
+            type: object
+            properties:
+              me:
+                $ref: "#/components/schemas/Me"

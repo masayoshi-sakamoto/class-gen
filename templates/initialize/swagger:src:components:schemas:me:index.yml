@@ -1,0 +1,18 @@
+required:
+  - id
+  - name
+  - email
+type: "object"
+properties:
+  id:
+    type: string
+    example: 'unique_user_id'
+  username:
+    type: string
+    example: 'username'
+  name:
+    type: string
+    example: 'ログインユーザー'
+  email:
+    type: string
+    example: 'username@example.com'

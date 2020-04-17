@@ -1,0 +1,15 @@
+required:
+  - access_token
+  - token_type
+  - expired
+type: "object"
+properties:
+  access_token:
+    type: string
+    example: 'access_token'
+  token_type:
+    type: string
+    example: 'bearer'
+  expired:
+    type: string
+    example: '20000'

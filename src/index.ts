@@ -10,6 +10,10 @@ try {
     .option('-d, --dist <dist>', 'output directory')
     .option('-a, --appname <appname>', 'application name')
     .option('-t, --title <title>', 'title name')
+    
+  commander.command('initialize').action(() => {
+    initialize()
+  })
 
   commander.command('entity [className]').action((className: string) => {
     if (!className) {
@@ -103,14 +107,14 @@ try {
   process.exit(2)
 }
 
-function initialize() {
+function init() {
   commander.dist = !commander.dist ? 'app' : commander.dist
   if (!fs.existsSync(commander.dist)) {
     fs.mkdirSync(commander.dist)
   }
 }
 
-function initializeSwagger() {
+function initSwagger() {
   if (!fs.existsSync('swagger')) {
     fs.mkdirSync('swagger')
   }
@@ -138,7 +142,7 @@ function generator(params: { type: string; dist: string; filename?: string; name
 
 function entities(className: string) {
   const type = 'entities'
-  initialize()
+  init()
   const dist = makeDir(commander.dist, type)
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const title = commander.title === undefined ? 'title' : commander.title
@@ -147,7 +151,7 @@ function entities(className: string) {
 
 function repositories(className: string) {
   const type = 'repositories'
-  initialize()
+  init()
   const dist = makeDir(commander.dist, type)
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   generator({ type, dist, name, outfile: name + 'Repository', options: { name } })
@@ -161,7 +165,7 @@ function gateways(className: string) {
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   const title = commander.title === undefined ? 'title' : commander.title
 
-  initialize()
+  init()
   const gateway = makeDir(makeDir(commander.dist, type), appName)
   const translator = makeDir(gateway, 'translator')
 
@@ -190,7 +194,7 @@ function infrastructure(className: string) {
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
-  initialize()
+  init()
   const dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'network'), appName), 'requests')
   generator({ type, dist, name, outfile: name.toLowerCase(), options: { name, names, appName } })
 }
@@ -201,7 +205,7 @@ function store(className: string) {
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
-  initialize()
+  init()
   let dist = makeDir(makeDir(commander.dist, type), name.toLowerCase())
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name } })
   generator({ type, dist, name, outfile: 'mutations', filename: 'mutations', options: { name } })
@@ -222,7 +226,7 @@ function usecase(className: string) {
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
-  initialize()
+  init()
   const dist = makeDir(makeDir(commander.dist, type), name.toLowerCase())
   generator({ type, dist, name, outfile: 'Delete' + name + 'UseCase', filename: 'delete', options: { name, names, appName } })
   generator({ type, dist, name, outfile: 'Fetch' + names + 'UseCase', filename: 'fetch', options: { name, names, appName } })
@@ -237,7 +241,7 @@ function swagger(className: string) {
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
-  initializeSwagger()
+  initSwagger()
   let dist = makeDir(makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas'), name.toLowerCase())
   generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
   generator({ ext: '.yml', type, dist, name, outfile: 'seed', filename: 'seed', options: { name, names, appName } })
@@ -245,6 +249,15 @@ function swagger(className: string) {
   dist = makeDir(makeDir(makeDir(type, 'src'), 'paths'), names.toLowerCase())
   generator({ ext: '.yml', type, dist, name, outfile: 'path', filename: 'path', options: { name, names, appName } })
   generator({ ext: '.yml', type, dist, name, outfile: 'paths', filename: 'paths', options: { name, names, appName } })
+
+  swaggerIndex()
+}
+
+function swaggerIndex() {
+
+  const type = 'swagger'
+  commander.appname = !commander.appname ? 'application' : commander.appname
+  const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
 
   let read = makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas')
   let files: string[] = fs.readdirSync(read)
@@ -254,8 +267,8 @@ function swagger(className: string) {
     const read = makeDir(makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas'), file)
     paths[file] = fs.readdirSync(read)
   })
-  dist = read
-  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'schemas.index', options: { paths, name, names, appName } })
+  let dist = read
+  generator({ ext: '.yml', type, dist, name: '', outfile: 'index', filename: 'schemas.index', options: { paths, appName } })
 
   read = makeDir(makeDir(type, 'src'), 'paths')
   files = fs.readdirSync(read)
@@ -266,9 +279,10 @@ function swagger(className: string) {
     paths[file] = fs.readdirSync(read)
   })
   dist = read
-  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'paths.index', options: { paths, name, names, appName } })
+  generator({ ext: '.yml', type, dist, name: '', outfile: 'index', filename: 'paths.index', options: { paths, appName } })
 
 }
+
 
 function components(className: string) {
   const type = 'components'
@@ -278,7 +292,7 @@ function components(className: string) {
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   const title = commander.title === undefined ? 'title' : commander.title
 
-  initialize()
+  init()
   let dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'organisms'), 'Form'), name)
   generator({ type, dist, name, outfile: 'fixtures', filename: 'fixtures', options: { name, names, appName } })
   generator({ type, dist, name, outfile: name + '.story', filename: 'form.story', options: { name, names, appName } })
@@ -307,7 +321,7 @@ function injector() {
   commander.appname = !commander.appname ? 'application' : commander.appname
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   
-  initialize()
+  init()
   const read = makeDir(commander.dist, 'repositories')
   const repositories = fs.readdirSync(read)
 
@@ -326,7 +340,7 @@ function index() {
   commander.appname = !commander.appname ? 'application' : commander.appname
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   
-  initialize()
+  init()
   let read = makeDir(makeDir(commander.dist, 'gateways'), appName)
   let files = fs.readdirSync(read)
   let dist = read
@@ -336,5 +350,37 @@ function index() {
   files = fs.readdirSync(read)
   dist = read
   generator({ type, dist, name: '', outfile: 'index', filename: 'store', options: { files, appName } })
+
+}
+
+function initialize() {
+  const type = 'initialize'
+  commander.appname = !commander.appname ? 'application' : commander.appname
+  const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
+  
+  init()
+  initSwagger()
+  const template = path.resolve(__dirname, '../templates/' + type)
+  let files: string[] = fs.readdirSync(template)
+
+  files.forEach((file) => {
+    const content = ejs.render(fs.readFileSync(template + '/' + file, 'utf-8'), { appName })
+    const items = file.split(':')
+    const filename = items.pop()
+    const path = items.reduce((acc, current) => {
+      const path = acc === 'app' ? commander.dist : acc
+      const dir = current === 'appName' ? appName : current
+      return makeDir(path, dir)
+    })
+    const filepath = path + '/' + filename
+    fs.writeFileSync(filepath, content, { encoding: 'utf-8', flag: 'w+' })
+    console.log('Generated:', filepath)
+  })
+
+  swaggerIndex()
+  const read = makeDir(makeDir(commander.dist, 'gateways'), appName)
+  files = fs.readdirSync(read)
+  const dist = read
+  generator({ type: 'index', dist, name: '', outfile: 'index', filename: 'gateways', options: { files, appName } })
 
 }
