@@ -1,11 +1,11 @@
 import { I<%= name %>Props } from '@/entities/<%= name %>'
-import { Options } from '@/entities/Options'
+import { IOptionsProps } from '@/entities/Options'
 
 export interface I<%= name %>State {
   byIds: {
     [id: string]: I<%= name %>Props
   }
-  options: Options | undefined
+  options: IOptionsProps | undefined
 }
 
 export const state = (): I<%= name %>State => ({
@@ -14,7 +14,9 @@ export const state = (): I<%= name %>State => ({
     total: 0,
     page: 1,
     itemsPerPage: 20,
-    pageCount: 0
+    pageCount: 0,
+    sortBy: [],
+    sortDesc: []
   }
 })
 

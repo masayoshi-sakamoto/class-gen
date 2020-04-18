@@ -1,12 +1,13 @@
 <template>
   <LayoutApp :title="title">
-    <List<%= name %> :value="value" @save="save" @destroy="destroy" @update="update"></List<%= name %>>
+    <List<%= name %> :value="value" :options="options" @fetch="fetch" @save="save" @destroy="destroy" @update="update"></List<%= name %>>
   </LayoutApp>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import <%= name %>Entity from '@/entities/<%= name %>'
+import OptionsEntity from '@/entities/Options'
 import LayoutApp from '@/components/organisms/Layout/App'
 import List<%= name %> from '@/components/organisms/List/<%= name %>'
 
@@ -23,9 +24,16 @@ export default Vue.extend({
     value: {
       type: Array as PropType<<%= name %>Entity[]>,
       required: true
+    },
+    options: {
+      type: Object as PropType<OptionsEntity>,
+      required: true
     }
   },
   methods: {
+    fetch(entity: OptionsEntity) {
+      this.$emit('fetch', entity)
+    },
     save(entity: <%= name %>Entity) {
       this.$emit('save', entity)
     },

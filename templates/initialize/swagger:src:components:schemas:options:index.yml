@@ -1,0 +1,23 @@
+required:
+  - total
+  - page
+  - take
+  - count
+type: "object"
+properties:
+  total:
+    type: integer
+    format: int32
+    example: 100
+  page:
+    type: integer
+    format: int32
+    example: 10
+  take:
+    type: integer
+    format: int32
+    example: 10
+  count:
+    type: integer
+    format: int32
+    example: 0

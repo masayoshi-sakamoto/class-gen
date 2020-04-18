@@ -9,18 +9,29 @@
     <template v-else>
       <v-row>
         <v-col cols="12" offset-md="8" md="4">
-          <v-text-field v-model="search" append-icon="mdi-magnify" label="検索ワード" clearable single-line hide-details></v-text-field>
+          <v-form @submit.prevent="search(true)">
+            <v-text-field
+              v-model="word"
+              append-icon="mdi-magnify"
+              label="検索ワード"
+              clearable
+              single-line
+              hide-details
+              @click:clear="search(false)"
+            ></v-text-field>
+          </v-form>
         </v-col>
       </v-row>
       <v-data-table
         :headers="headers"
         :items="items"
-        :page.sync="options.page"
-        :options.sync="options"
-        :items-per-page="options.itemsPerPage"
-        :search="search"
+        :page.sync="props.page"
+        :options="props"
+        :server-items-length="props.total"
+        :items-per-page="props.itemsPerPage"
         hide-default-footer
-        @page-count="options.pageCount = $event"
+        @page-count="props.pageCount = $event"
+        @update:options="pages"
       >
         <template v-slot:item.actions="{ item }">
           <v-icon small class="mr-3" @click="open(item)">
@@ -32,10 +43,10 @@
         </template>
       </v-data-table>
       <v-pagination
-        v-if="options.pageCount > 1"
-        v-model="options.page"
+        v-if="props.pageCount > 1"
+        v-model="props.page"
         :total-visible="7"
-        :length="options.pageCount"
+        :length="props.pageCount"
         class="mt-5"
       ></v-pagination>
     </template>
@@ -54,7 +65,7 @@
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import <%= name %>Entity, { headers, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
-import { Options } from '@/entities/Options'
+import OptionsEntity, { IOptionsProps, EmptyOptionsPropsFactory } from '@/entities/Options'
 import Dialog from '@/components/molecules/Dialog'
 import Destroy from '@/components/molecules/Destroy'
 import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
@@ -64,8 +75,8 @@ interface IData {
   entity: <%= name %>Entity | null
   dialog: boolean
   items: <%= name %>Entity[]
-  search: string
-  options: Options
+  props: IOptionsProps
+  word: string
 }
 
 export default Vue.extend({
@@ -78,6 +89,10 @@ export default Vue.extend({
     value: {
       type: Array as PropType<<%= name %>Entity[]>,
       required: true
+    },
+    options: {
+      type: Object as PropType<OptionsEntity>,
+      default: undefined
     }
   },
   data(): IData {
@@ -86,19 +101,20 @@ export default Vue.extend({
       entity: Empty<%= name %>EntityFactory(),
       dialog: false,
       items: this.value,
-      search: '',
-      options: {
-        total: 0,
-        page: 1,
-        itemsPerPage: 10,
-        pageCount: 0
-      }
+      props: this.options.props,
+      word: ''
     }
   },
   watch: {
     value: {
       handler() {
         this.items = this.value
+      },
+      immediate: true
+    },
+    options: {
+      handler() {
+        this.props = this.options.props
       },
       immediate: true
     }
@@ -118,6 +134,17 @@ export default Vue.extend({
     destroy() {
       this.dialog = false
       this.$emit('destroy', this.entity)
+    },
+    search(value: boolean) {
+      const props = EmptyOptionsPropsFactory(this.props)
+      props.search = value ? this.word : undefined
+      props.page = 0
+      this.$emit('fetch', new OptionsEntity(props))
+    },
+    pages() {
+      const props = EmptyOptionsPropsFactory(this.props)
+      props.search = this.word
+      this.$emit('fetch', new OptionsEntity(props))
     }
   }
 })

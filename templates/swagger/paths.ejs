@@ -11,12 +11,15 @@ get:
           schema:
             required:
               - <%= names.toLowerCase() %>
+              - options
             type: object
             properties:
               <%= names.toLowerCase() %>:
                 type: array
                 items:
                   $ref: "#/components/schemas/<%= name %>"
+              options:
+                $ref: "#/components/schemas/Options"
 post:
   tags:
     - <%= name %>

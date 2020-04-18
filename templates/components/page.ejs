@@ -1,5 +1,5 @@
 <template>
-  <<%= name %> :value="entities" :title="title" @save="save" @destroy="destroy" @update="update"></<%= name %>>
+  <<%= name %> :value="entities" :options="options" :title="title" @fetch="fetch" @save="save" @destroy="destroy" @update="update"></<%= name %>>
 </template>
 
 <script lang="ts">
@@ -11,9 +11,11 @@ import Save<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Save<%=
 import Delete<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Delete<%= name %>UseCase'
 import Update<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Update<%= names %>UseCase'
 import <%= name %>Entity from '@/entities/<%= name %>'
+import OptionsEntity from '@/entities/Options'
 
 interface IData {
   entities: <%= name %>Entity[]
+  options: OptionsEntity | undefined
   title: string
 }
 
@@ -24,15 +26,27 @@ export default Vue.extend({
   },
   async fetch({ App }) {
     const usecase1 = new Fetch<%= names %>UseCase(App)
-    await Promise.all([usecase1.execute()])
+    await Promise.all([usecase1.execute(App.<%= name.toLowerCase() %>.options())])
   },
   data(): IData {
     return {
       entities: this.App.<%= name.toLowerCase() %>.all(),
-      title: '法人'
+      options: this.App.<%= name.toLowerCase() %>.options(),
+      title: '<%= japanese %>'
     }
   },
   methods: {
+    async fetch(entity: OptionsEntity) {
+      const usecase = new Fetch<%= names %>UseCase(this.App)
+      const res = await usecase.execute(entity)
+      if (typeof res === 'string') {
+        return this.$router.push(res)
+      }
+      if (res) {
+        this.entities = this.App.<%= name.toLowerCase() %>.all()
+        this.options = this.App.<%= name.toLowerCase() %>.options()
+      }
+    },
     async save(entity: <%= name %>Entity) {
       const usecase = new Save<%= name %>UseCase(this.App)
       const res = await usecase.execute(entity)

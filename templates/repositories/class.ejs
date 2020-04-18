@@ -2,7 +2,7 @@ import { Store } from 'vuex'
 import { RootState } from '@/store'
 import * as types from '@/store/<%= name.toLowerCase() %>/types'
 import <%= name %>Entity, { I<%= name %>Props, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
-import { Options } from '@/entities/Options'
+import OptionsEntity, { IOptionsProps, EmptyOptionsEntityFactory } from '@/entities/Options'
 
 export default class <%= name %>Repository {
   private _store: Store<RootState>
@@ -11,7 +11,7 @@ export default class <%= name %>Repository {
     this._store = store
   }
 
-  save(items: I<%= name %>Props[] | I<%= name %>Props, options?: Options) {
+  save(items: I<%= name %>Props[] | I<%= name %>Props, options?: IOptionsProps) {
     if (!Array.isArray(items)) {
       items = [items]
     }
@@ -32,7 +32,8 @@ export default class <%= name %>Repository {
     this._store.commit(new types.Remove(prop))
   }
 
-  options(): Options | undefined {
-    return this._store.state.<%= name.toLowerCase() %>.options
+  options(): OptionsEntity {
+    const props = this._store.state.<%= name.toLowerCase() %>.options
+    return props ? EmptyOptionsEntityFactory(props) : EmptyOptionsEntityFactory()
   }
 }

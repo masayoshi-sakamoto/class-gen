@@ -1,6 +1,7 @@
 import { <%= appName %>, <%= name %>Seed } from '@/infrastructure/network/<%= appName %>/schema'
 import { APIRequest } from '@/infrastructure/network/APIRequest'
 import { HTTPMethod } from '@/infrastructure/network/types'
+import { IParamsProps } from '@/entities/Options'
 
 export class Get<%= name %> implements APIRequest<<%= appName %>.<%= name %>.get<%= name %>Response> {
   response: <%= appName %>.<%= name %>.get<%= name %>Response
@@ -17,7 +18,9 @@ export class Get<%= names %> implements APIRequest<<%= appName %>.<%= name %>.ge
   path: string
   contentType = 'application/json'
   method = HTTPMethod.GET
-  constructor() {
+  params: IParamsProps
+  constructor(params: IParamsProps) {
+    this.params = params
     this.path = '/<%= names.toLowerCase() %>'
   }
 }

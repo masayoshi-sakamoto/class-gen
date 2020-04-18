@@ -1,20 +1,21 @@
 import { IApp } from '@/types/nuxt'
 import { errors } from '@/utils/error'
+import OptionsEntity from '@/entities/Options'
 
-export default class Fetch<%= name %>sUseCase implements BaseUseCase {
+export default class Fetch<%= names %>UseCase implements BaseUseCase {
   app: IApp
   constructor(app: IApp) {
     this.app = app
   }
 
-  async execute() {
+  async execute(entity: OptionsEntity) {
     const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       state.loading = true
-      const props = await <%= appName.toLowerCase() %>Gateway.<%= name %>.Get<%= names %>()
+      const { props, options } = await <%= appName.toLowerCase() %>Gateway.<%= name %>.Get<%= names %>(entity)
       state.loading = false
       <%= name.toLowerCase() %>.save([])
-      <%= name.toLowerCase() %>.save(props)
+      <%= name.toLowerCase() %>.save(props, options)
       return true
     } catch (error) {
       state.loading = false
