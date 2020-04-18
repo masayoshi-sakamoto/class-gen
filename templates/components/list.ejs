@@ -1,88 +1,123 @@
 <template>
   <v-container fluid>
     <v-btn width="240" color="primary" tile elevation="0" @click.stop="open(null)">
-      <strong>-- タイトル --</strong>
+      <strong><v-icon left>mdi-plus</v-icon><%= japanese %>の追加</strong>
     </v-btn>
-    <v-row>
-      <v-col cols="12" offset-md="8" md="4">
-        <v-text-field v-model="search" append-icon="mdi-magnify" label="検索ワード" single-line hide-details></v-text-field>
-      </v-col>
-    </v-row>
-    <v-data-table
-      :headers="headers"
-      :items="entities"
-      :page.sync="value.page"
-      :options.sync="options"
-      :items-per-page="value.itemsPerPage"
-      :search="search"
-      hide-default-footer
-      class="hcmj--data-table"
-      @page-count="value.pageCount = $event"
-    >
-      <template v-slot:item.name="{ item }">
-        <span class="hcmj--text-link" @click="open(item)">{{ item.name }}</span>
-      </template>
-    </v-data-table>
-    <v-pagination
-      v-if="value.pageCount > 1"
-      v-model="value.page"
-      :total-visible="7"
-      :length="value.pageCount"
-      class="mt-5 hcmj--pagination"
-    ></v-pagination>
-    <Dialog type="<%= name.toLowerCase() %>" title="-- タイトル --">
-      <Form<%= name %> v-model="seed" @submit="save"></Form<%= name %>>
+    <div v-if="items.length === 0">
+      <p class="my-6 text-center"><%= japanese %>の追加を行ってください。</p>
+    </div>
+    <template v-else>
+      <v-row>
+        <v-col cols="12" offset-md="8" md="4">
+          <v-text-field v-model="search" append-icon="mdi-magnify" label="検索ワード" clearable single-line hide-details></v-text-field>
+        </v-col>
+      </v-row>
+      <v-data-table
+        :headers="headers"
+        :items="items"
+        :page.sync="options.page"
+        :options.sync="options"
+        :items-per-page="options.itemsPerPage"
+        :search="search"
+        hide-default-footer
+        @page-count="options.pageCount = $event"
+      >
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="mr-3" @click="open(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small @click="remove(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+      </v-data-table>
+      <v-pagination
+        v-if="options.pageCount > 1"
+        v-model="options.page"
+        :total-visible="7"
+        :length="options.pageCount"
+        class="mt-5"
+      ></v-pagination>
+    </template>
+    <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>の追加">
+      <Form<%= name %> v-model="entity" @submit="save"></Form<%= name %>>
     </Dialog>
+    <Destroy v-model="dialog" @destroy="destroy">
+      <v-alert light border="top" colored-border prominent type="error">
+        <div class="title"><%= japanese %>の削除</div>
+        <%= japanese %>を削除します。
+      </v-alert>
+    </Destroy>
   </v-container>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
 import <%= name %>Entity, { headers, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
-import Dialog from '@/components/molecules/Dialog'
-import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
 import { Options } from '@/entities/Options'
+import Dialog from '@/components/molecules/Dialog'
+import Destroy from '@/components/molecules/Destroy'
+import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
+
+interface IData {
+  headers: object[]
+  entity: <%= name %>Entity | null
+  dialog: boolean
+  items: <%= name %>Entity[]
+  search: string
+  options: Options
+}
 
 export default Vue.extend({
   components: {
     Dialog,
+    Destroy,
     Form<%= name %>
   },
   props: {
-    entities: {
-      type: Array as PropType<<%= name %>Entity[]>,
-      required: true
-    },
     value: {
-      type: Object as PropType<Options>,
+      type: Array as PropType<<%= name %>Entity[]>,
       required: true
     }
   },
-  data() {
+  data(): IData {
     return {
       headers,
-      options: {},
+      entity: Empty<%= name %>EntityFactory(),
+      dialog: false,
+      items: this.value,
       search: '',
-      seed: Empty<%= name %>EntityFactory()
+      options: {
+        total: 0,
+        page: 1,
+        itemsPerPage: 10,
+        pageCount: 0
+      }
     }
   },
   watch: {
-    options: {
-      handler(value) {
-        // TODO: データをAPIから取得してページング処理
-        console.log(value)
+    value: {
+      handler() {
+        this.items = this.value
       },
-      deep: true
+      immediate: true
     }
   },
   methods: {
-    save() {
-      console.log(this.seed)
-      this.$emit('save', this.seed)
-    },
     open(entity: <%= name %>Entity | null) {
-      this.seed = entity === null ? Empty<%= name %>EntityFactory() : Empty<%= name %>EntityFactory(entity.props)
+      this.entity = entity || Empty<%= name %>EntityFactory()
       this.App.state.setDialog('<%= name.toLowerCase() %>', true)
+    },
+    remove(entity: <%= name %>Entity) {
+      this.dialog = true
+      this.entity = entity
+    },
+    save(entity: <%= name %>Entity) {
+      this.$emit('save', entity)
+    },
+    destroy() {
+      this.dialog = false
+      this.$emit('destroy', this.entity)
     }
   }
 })

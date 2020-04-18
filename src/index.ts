@@ -9,6 +9,7 @@ try {
   commander.version(pkg.version)
     .option('-d, --dist <dist>', 'output directory')
     .option('-a, --appname <appname>', 'application name')
+    .option('-j, --japanese <japanese>', 'japanese name')
     .option('-t, --title <title>', 'title name')
     
   commander.command('initialize').action(() => {
@@ -99,6 +100,7 @@ try {
       usecase(className)
       swagger(className)
       components(className)
+      injector()
     })
 
   commander.parse(process.argv)
@@ -240,11 +242,12 @@ function swagger(className: string) {
   const name = className.charAt(0).toUpperCase() + className.slice(1)
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
+  const title = commander.title === undefined ? 'title' : commander.title
 
   initSwagger()
   let dist = makeDir(makeDir(makeDir(makeDir(type, 'src'), 'components'), 'schemas'), name.toLowerCase())
-  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
-  generator({ ext: '.yml', type, dist, name, outfile: 'seed', filename: 'seed', options: { name, names, appName } })
+  generator({ ext: '.yml', type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName, title } })
+  generator({ ext: '.yml', type, dist, name, outfile: 'seed', filename: 'seed', options: { name, names, appName, title } })
 
   dist = makeDir(makeDir(makeDir(type, 'src'), 'paths'), names.toLowerCase())
   generator({ ext: '.yml', type, dist, name, outfile: 'path', filename: 'path', options: { name, names, appName } })
@@ -291,28 +294,29 @@ function components(className: string) {
   const names = inflector.pluralize(name)
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   const title = commander.title === undefined ? 'title' : commander.title
+  const japanese = !commander.japanese ? name : commander.japanese
 
   init()
   let dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'organisms'), 'Form'), name)
   generator({ type, dist, name, outfile: 'fixtures', filename: 'fixtures', options: { name, names, appName } })
   generator({ type, dist, name, outfile: name + '.story', filename: 'form.story', options: { name, names, appName } })
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
-  generator({ ext: '.vue', type, dist, name, filename: 'form', options: { name, names, appName } })
+  generator({ ext: '.vue', type, dist, name, filename: 'form', options: { name, names, appName, japanese, title } })
 
   dist = makeDir(makeDir(makeDir(makeDir(commander.dist, type), 'organisms'), 'List'), name)
   generator({ type, dist, name, outfile: 'fixtures', filename: 'fixtures', options: { name, names, appName } })
-  generator({ type, dist, name, outfile: name + '.story', filename: 'list.story', options: { name, names, appName, title } })
+  generator({ type, dist, name, outfile: name + '.story', filename: 'list.story', options: { name, names, appName, title, japanese } })
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
-  generator({ ext: '.vue', type, dist, name, filename: 'list', options: { name, names, appName } })
+  generator({ ext: '.vue', type, dist, name, filename: 'list', options: { name, names, appName, japanese, title } })
 
   dist = makeDir(makeDir(makeDir(commander.dist, type), 'templates'), name)
   generator({ type, dist, name, outfile: 'fixtures', filename: 'fixtures', options: { name, names, appName } })
-  generator({ type, dist, name, outfile: name + '.story', filename: 'templates.story', options: { name, names, appName } })
+  generator({ type, dist, name, outfile: name + '.story', filename: 'templates.story', options: { name, names, appName, title, japanese } })
   generator({ type, dist, name, outfile: 'index', filename: 'index', options: { name, names, appName } })
-  generator({ ext: '.vue', type, dist, name, filename: 'templates', options: { name, names, appName } })
+  generator({ ext: '.vue', type, dist, name, filename: 'templates', options: { name, names, appName, japanese } })
 
   dist = makeDir(makeDir(commander.dist, 'pages'), name.toLowerCase())
-  generator({ ext: '.vue', type, dist, name, outfile: 'index', filename: 'page', options: { name, names, appName } })
+  generator({ ext: '.vue', type, dist, name, outfile: 'index', filename: 'page', options: { name, names, appName, japanese } })
 
 }
 

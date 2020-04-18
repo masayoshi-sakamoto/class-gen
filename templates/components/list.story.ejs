@@ -12,17 +12,17 @@ Vue.use(Vuex)
 Vue.use(Vuetify)
 
 const entities = [
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id1', <%= title %>: 'タイトル1' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id2', <%= title %>: 'タイトル2' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id3', <%= title %>: 'タイトル3' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id4', <%= title %>: 'タイトル4' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id5', <%= title %>: 'タイトル5' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id6', <%= title %>: 'タイトル6' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id7', <%= title %>: 'タイトル7' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id8', <%= title %>: 'タイトル8' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id9', <%= title %>: 'タイトル9' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id10', <%= title %>: 'タイトル10' }),
-  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', <%= title %>: 'タイトル11' })
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id1', <%= title %>: '<%= japanese %>1' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id2', <%= title %>: '<%= japanese %>2' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id3', <%= title %>: '<%= japanese %>3' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id4', <%= title %>: '<%= japanese %>4' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id5', <%= title %>: '<%= japanese %>5' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id6', <%= title %>: '<%= japanese %>6' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id7', <%= title %>: '<%= japanese %>7' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id8', <%= title %>: '<%= japanese %>8' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id9', <%= title %>: '<%= japanese %>9' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id10', <%= title %>: '<%= japanese %>10' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', <%= title %>: '<%= japanese %>11' })
 ]
 
 export default {
@@ -32,18 +32,25 @@ export default {
 
 export const Default = () => ({
   components: { Tag },
-  template: '<Tag :entities="entities" v-model="options" />',
+  template: '<Tag v-model="entities" />',
   data() {
     return {
-      entities,
-      options: {
-        total: 11,
-        page: 1,
-        itemsPerPage: 10,
-        pageCount: 2
-      }
+      entities
     }
   },
+  created() {
+    const cookies = Cookie()
+    const store = createStore()
+    const storyState = Object.assign(store.state, defaultData)
+    store.replaceState(storyState)
+
+    injector(Vue, store, cookies)
+  }
+})
+
+export const Empty = () => ({
+  components: { Tag },
+  template: '<Tag :value="[]" />',
   created() {
     const cookies = Cookie()
     const store = createStore()

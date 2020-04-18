@@ -1,5 +1,6 @@
 import { Context } from '@nuxt/types/app'
 import { Middleware } from '@nuxt/types'
+import { menus } from '@/entities/Menu'
 
 const authenticated: Middleware = async ({ App, redirect, route }: Context) => {
   try {
@@ -11,6 +12,8 @@ const authenticated: Middleware = async ({ App, redirect, route }: Context) => {
       redirect('/login')
       return
     }
+
+    App.state.menus = menus
   } catch (e) {
     if (route.name !== 'login') {
       App.state.refresh()

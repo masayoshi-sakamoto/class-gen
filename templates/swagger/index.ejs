@@ -1,12 +1,12 @@
 required:
   - id
-  - title
+  - <%= title %>
   - order
 properties:
   id:
     type: string
     example: "unique_<%= name.toLowerCase() %>_id"
-  title:
+  <%= title %>:
     type: string
     example: "タイトル"
   order:

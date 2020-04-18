@@ -2,10 +2,10 @@
   <v-app-bar app dark clipped-left color="accent" dense>
     <v-app-bar-nav-icon @click.stop="App.state.drawer = !App.state.drawer" />
     <v-toolbar-title class="mr-12 align-center">
-      <v-img src="/assets/images/logo_h_b.png" width="100"></v-img>
+      <%= appName %>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-    <v-btn text small class="qif--font-noto font-weight-bold">
+    <v-btn text small class="font-weight-bold" :to="{ name: 'logout' }">
       ログアウト
     </v-btn>
   </v-app-bar>

@@ -6,9 +6,9 @@
       </v-alert>
       <validation-provider v-slot="{ errors }" rules="required" name="タイトル">
         <v-text-field
-          v-model="props.title"
+          v-model="props.<%= title %>"
           label="タイトル"
-          :error-messages="App.state.errors.title ? App.state.errors.title : errors[0]"
+          :error-messages="App.state.errors.<%= title %> ? App.state.errors.<%= title %> : errors[0]"
           required
         ></v-text-field>
       </validation-provider>

@@ -1,11 +1,12 @@
 <template>
-  <LayoutApp title="-- タイトル --">
-    <List<%= name %> v-model="options" :entities="entities"></List<%= name %>>
+  <LayoutApp :title="title">
+    <List<%= name %> :value="value" @save="save" @destroy="destroy" @update="update"></List<%= name %>>
   </LayoutApp>
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue, { PropType } from 'vue'
+import <%= name %>Entity from '@/entities/<%= name %>'
 import LayoutApp from '@/components/organisms/Layout/App'
 import List<%= name %> from '@/components/organisms/List/<%= name %>'
 
@@ -14,10 +15,25 @@ export default Vue.extend({
     LayoutApp,
     List<%= name %>
   },
-  data() {
-    return {
-      entities: this.App.<%= name.toLowerCase() %>.all(),
-      options: { ...this.App.<%= name.toLowerCase() %>.options() }
+  props: {
+    title: {
+      type: String,
+      default: ''
+    },
+    value: {
+      type: Array as PropType<<%= name %>Entity[]>,
+      required: true
+    }
+  },
+  methods: {
+    save(entity: <%= name %>Entity) {
+      this.$emit('save', entity)
+    },
+    destroy(entity: <%= name %>Entity) {
+      this.$emit('destroy', entity)
+    },
+    update(entities: <%= name %>Entity[]) {
+      this.$emit('update', entities)
     }
   }
 })

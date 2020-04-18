@@ -1,5 +1,5 @@
 <template>
-  <<%= name %> :value="entities" title="-- タイトル --" @save="save" @destroy="destroy" @update="update"></<%= name %>>
+  <<%= name %> :value="entities" :title="title" @save="save" @destroy="destroy" @update="update"></<%= name %>>
 </template>
 
 <script lang="ts">
@@ -14,6 +14,7 @@ import <%= name %>Entity from '@/entities/<%= name %>'
 
 interface IData {
   entities: <%= name %>Entity[]
+  title: string
 }
 
 export default Vue.extend({
@@ -27,37 +28,42 @@ export default Vue.extend({
   },
   data(): IData {
     return {
-      entities: this.App.<%= name.toLowerCase() %>.all()
+      entities: this.App.<%= name.toLowerCase() %>.all(),
+      title: '法人'
     }
   },
   methods: {
     async save(entity: <%= name %>Entity) {
       const usecase = new Save<%= name %>UseCase(this.App)
-      this.App.state.loading = true
-      if (await usecase.execute(entity)) {
+      const res = await usecase.execute(entity)
+      if (typeof res === 'string') {
+        return this.$router.push(res)
+      }
+      if (res) {
         this.entities = this.App.<%= name.toLowerCase() %>.all()
         this.App.state.setDialog('<%= name.toLowerCase() %>', false)
       }
-      this.App.state.loading = false
     },
     async destroy(entity: <%= name %>Entity) {
       const usecase = new Delete<%= name %>UseCase(this.App)
-      this.App.state.loading = true
-      await usecase.execute(entity)
+      const res = await usecase.execute(entity)
+      if (typeof res === 'string') {
+        return this.$router.push(res)
+      }
       this.entities = this.App.<%= name.toLowerCase() %>.all()
-      this.App.state.loading = false
     },
     async update(entities: <%= name %>Entity[]) {
       const usecase = new Update<%= names %>UseCase(this.App)
-      this.App.state.loading = true
-      await usecase.execute(entities)
+      const res = await usecase.execute(entities)
+      if (typeof res === 'string') {
+        return this.$router.push(res)
+      }
       this.entities = this.App.<%= name.toLowerCase() %>.all()
-      this.App.state.loading = false
     }
   },
   head() {
     return {
-      title: '-- タイトル --'
+      title: this.title
     }
   }
 })

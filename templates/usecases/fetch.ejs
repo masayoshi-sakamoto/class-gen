@@ -1,5 +1,4 @@
 import { IApp } from '@/types/nuxt'
-import { LogType } from '@/services/LogService'
 import { errors } from '@/utils/error'
 
 export default class Fetch<%= name %>sUseCase implements BaseUseCase {
@@ -11,14 +10,15 @@ export default class Fetch<%= name %>sUseCase implements BaseUseCase {
   async execute() {
     const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
+      state.loading = true
       const props = await <%= appName.toLowerCase() %>Gateway.<%= name %>.Get<%= names %>()
+      state.loading = false
       <%= name.toLowerCase() %>.save([])
       <%= name.toLowerCase() %>.save(props)
       return true
     } catch (error) {
-      await logService.handle({ type: LogType.Error, error })
-      state.errors = errors(error)
-      return false
+      state.loading = false
+      return await errors(error, this.app, logService)
     }
   }
 }

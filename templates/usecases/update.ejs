@@ -1,5 +1,4 @@
 import { IApp } from '@/types/nuxt'
-import { LogType } from '@/services/LogService'
 import <%= name %>Entity from '@/entities/<%= name %>'
 import { errors } from '@/utils/error'
 
@@ -12,16 +11,17 @@ export default class Update<%= names %>UseCase implements BaseUseCase {
   async execute(entities: <%= name %>Entity[]) {
     const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
+      state.loading = true
       const exec = entities.map((entity) => <%= appName.toLowerCase() %>Gateway.<%= name %>.Put<%= name %>(entity))
+      state.loading = false
       await Promise.all(exec).then((response) => {
         response.forEach((prop) => {
           if (prop) <%= name.toLowerCase() %>.save(prop)
         })
       })
     } catch (error) {
-      await logService.handle({ type: LogType.Error, error })
-      state.errors = errors(error)
-      return ''
+      state.loading = false
+      return await errors(error, this.app, logService)
     }
   }
 }

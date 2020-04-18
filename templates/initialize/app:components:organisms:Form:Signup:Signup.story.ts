@@ -6,6 +6,10 @@ import Tag from './Signup.vue'
 import { defaultData } from './fixtures'
 import createStore from '@/store'
 import injector from '@/presenter/injector'
+import { SignupEntityFactory, EmptySignupEntityFactory } from '@/entities/Signup'
+
+const entity = SignupEntityFactory()
+const empty = EmptySignupEntityFactory()
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
@@ -17,7 +21,30 @@ export default {
 
 export const Default = () => ({
   components: { Tag },
-  template: '<Tag />',
+  template: '<div class="pa-4"><Tag v-model="entity" /></div>',
+  data() {
+    return {
+      entity
+    }
+  },
+  created() {
+    const cookies = Cookie()
+    const store = createStore()
+    const storyState = Object.assign(store.state, defaultData)
+    store.replaceState(storyState)
+
+    injector(Vue, store, cookies)
+  }
+})
+
+export const Empty = () => ({
+  components: { Tag },
+  template: '<div class="pa-4"><Tag v-model="empty" /></div>',
+  data() {
+    return {
+      empty
+    }
+  },
   created() {
     const cookies = Cookie()
     const store = createStore()

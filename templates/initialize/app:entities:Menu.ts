@@ -49,8 +49,8 @@ export const EmptyMenuPropsFactory = (props?: Partial<IMenuProps>): IMenuProps =
 
 export const MenuPropsFactory = (props?: Partial<IMenuProps>): IMenuProps => ({
   id: '1',
-  title: 'ホーム',
-  icon: 'mdi-home',
+  title: 'マイページ',
+  icon: 'mdi-home-outline',
   to: { name: 'index' },
   href: null,
   ...props
@@ -67,8 +67,8 @@ export const MenuEntityFactory = (props?: Partial<IMenuProps>): MenuEntity => {
 export const menus: MenuEntity[] = [
   EmptyMenuEntityFactory({
     id: '1',
-    title: 'ホーム',
+    title: 'マイページ',
     icon: 'mdi-home-outline',
     to: { name: 'index' }
-  }),
+  })
 ]

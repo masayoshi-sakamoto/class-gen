@@ -6,9 +6,24 @@ import Tag from './<%= name %>.vue'
 import { defaultData } from './fixtures'
 import createStore from '@/store'
 import injector from '@/presenter/injector'
+import { <%= name %>EntityFactory } from '@/entities/<%= name %>'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
+
+const entities = [
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id1', <%= title %>: '<%= japanese %>1' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id2', <%= title %>: '<%= japanese %>2' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id3', <%= title %>: '<%= japanese %>3' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id4', <%= title %>: '<%= japanese %>4' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id5', <%= title %>: '<%= japanese %>5' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id6', <%= title %>: '<%= japanese %>6' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id7', <%= title %>: '<%= japanese %>7' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id8', <%= title %>: '<%= japanese %>8' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id9', <%= title %>: '<%= japanese %>9' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id10', <%= title %>: '<%= japanese %>10' }),
+  <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', <%= title %>: '<%= japanese %>11' })
+]
 
 export default {
   title: 'components/templates/<%= name %>',
@@ -17,12 +32,25 @@ export default {
 
 export const Default = () => ({
   components: { Tag },
-  template: '<Tag />',
+  template: '<Tag :value="entities" />',
   data() {
     return {
-      entities: []
+      entities
     }
   },
+  created() {
+    const cookies = Cookie()
+    const store = createStore()
+    const storyState = Object.assign(store.state, defaultData)
+    store.replaceState(storyState)
+
+    injector(Vue, store, cookies)
+  }
+})
+
+export const Empty = () => ({
+  components: { Tag },
+  template: '<Tag :value="[]" />',
   created() {
     const cookies = Cookie()
     const store = createStore()

@@ -30,7 +30,8 @@ export default class <%= name %>Entity {
 
 export const headers = [
   { text: 'ID', value: 'id' },
-  { text: 'タイトル', value: '<%= title %>' }
+  { text: 'タイトル', value: '<%= title %>' },
+  { text: '', value: 'actions', sortable: false, width: '80' }
 ]
 
 export const Empty<%= name %>PropsFactory = (props?: Partial<I<%= name %>Props>): I<%= name %>Props => ({

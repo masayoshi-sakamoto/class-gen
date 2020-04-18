@@ -45,11 +45,13 @@ export interface IApp {
 declare module 'vue/types/vue' {
   interface Vue {
     App: IApp
+    title: string
   }
 }
 
 declare module '@nuxt/types/app/index' {
   interface Context {
     App: IApp
+    title: string
   }
 }
