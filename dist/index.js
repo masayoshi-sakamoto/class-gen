@@ -81,6 +81,16 @@ try {
         index();
         swaggerIndex();
     });
+    commander.command('remove [className]').action((className) => {
+        if (!className) {
+            console.error('className is required.');
+            return;
+        }
+        remove(className);
+        injector();
+        index();
+        swaggerIndex();
+    });
     commander
         .command('generate [className]')
         .action((className) => {
@@ -333,5 +343,34 @@ function initialize() {
     files = fs.readdirSync(read);
     const dist = read;
     generator({ type: 'index', dist, name: '', outfile: 'index', filename: 'gateways', options: { files, appName } });
+}
+function remove(className) {
+    const rimraf = require('rimraf');
+    commander.appname = !commander.appname ? 'application' : commander.appname;
+    const Name = className.charAt(0).toUpperCase() + className.slice(1);
+    const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1);
+    const name = Name.toUpperCase();
+    const names = inflector.pluralize(name);
+    init();
+    initSwagger();
+    try {
+        rimraf.sync(path.resolve(commander.dist, 'components', 'organisms', 'Form', Name));
+        rimraf.sync(path.resolve(commander.dist, 'components', 'organisms', 'List', Name));
+        rimraf.sync(path.resolve(commander.dist, 'components', 'templates', Name));
+        rimraf.sync(path.resolve(commander.dist, 'entities', name + '.ts'));
+        rimraf.sync(path.resolve(commander.dist, 'gateways', appName, name + '.ts'));
+        rimraf.sync(path.resolve(commander.dist, 'gateways', appName, 'translator', name + '.ts'));
+        rimraf.sync(path.resolve(commander.dist, 'infrastructure', 'network', appName, 'requests', name + '.ts'));
+        rimraf.sync(path.resolve(commander.dist, 'pages', name + '.vue'));
+        rimraf.sync(path.resolve(commander.dist, 'repositories', Name + 'Repository.ts'));
+        rimraf.sync(path.resolve(commander.dist, 'store', name));
+        rimraf.sync(path.resolve(commander.dist, 'usecases', name));
+        rimraf.sync(path.resolve(commander.dist, 'store', name));
+        rimraf.sync(path.resolve('swagger', 'src', 'components', 'schemas', name));
+        rimraf.sync(path.resolve('swagger', 'src', 'paths', names));
+    }
+    catch (e) {
+        console.log(e);
+    }
 }
 //# sourceMappingURL=index.js.map

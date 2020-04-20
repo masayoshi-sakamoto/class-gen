@@ -28,3 +28,4 @@ declare function components(className: string): void;
 declare function injector(): void;
 declare function index(): void;
 declare function initialize(): void;
+declare function remove(className: string): void;

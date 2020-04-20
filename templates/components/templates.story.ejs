@@ -7,6 +7,7 @@ import { defaultData } from './fixtures'
 import createStore from '@/store'
 import injector from '@/presenter/injector'
 import { <%= name %>EntityFactory } from '@/entities/<%= name %>'
+import { EmptyOptionsEntityFactory } from '@/entities/Options'
 
 Vue.use(Vuex)
 Vue.use(Vuetify)
@@ -25,6 +26,15 @@ const entities = [
   <%= name %>EntityFactory({ id: 'unique_<%= name.toLowerCase() %>_id11', <%= title %>: '<%= japanese %>11' })
 ]
 
+const options = EmptyOptionsEntityFactory({
+  total: 11,
+  page: 1,
+  itemsPerPage: 10,
+  pageCount: 2,
+  sortBy: [],
+  sortDesc: []
+})
+
 export default {
   title: 'components/templates/<%= name %>',
   component: Tag
@@ -32,10 +42,11 @@ export default {
 
 export const Default = () => ({
   components: { Tag },
-  template: '<Tag :value="entities" />',
+  template: '<Tag :value="entities" :options="options" />',
   data() {
     return {
-      entities
+      entities,
+      options
     }
   },
   created() {
@@ -50,7 +61,12 @@ export const Default = () => ({
 
 export const Empty = () => ({
   components: { Tag },
-  template: '<Tag :value="[]" />',
+  template: '<Tag :value="[]" :options="options" />',
+  data() {
+    return {
+      options
+    }
+  },
   created() {
     const cookies = Cookie()
     const store = createStore()
