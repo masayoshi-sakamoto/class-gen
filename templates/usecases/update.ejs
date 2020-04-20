@@ -13,12 +13,12 @@ export default class Update<%= names %>UseCase implements BaseUseCase {
     try {
       state.loading = true
       const exec = entities.map((entity) => <%= appName.toLowerCase() %>Gateway.<%= name %>.Put<%= name %>(entity))
-      state.loading = false
       await Promise.all(exec).then((response) => {
         response.forEach((prop) => {
           if (prop) <%= name.toLowerCase() %>.save(prop)
         })
       })
+      state.loading = false
     } catch (error) {
       state.loading = false
       return await errors(error, this.app, logService)

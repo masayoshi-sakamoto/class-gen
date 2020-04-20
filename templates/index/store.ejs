@@ -2,7 +2,7 @@ import Vuex from 'vuex'
 <%_ files.forEach((file) => {
   const store = file.split('.')[0]
   const Store = store.charAt(0).toUpperCase() + store.slice(1)
-  if (store !== 'index') {
+  if (store !== 'index' && store !== 'README') {
 _%>
 import * as <%= store %> from '@/store/<%= store %>'
 <%_ }}); _%>

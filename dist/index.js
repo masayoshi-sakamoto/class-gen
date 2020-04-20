@@ -13,6 +13,9 @@ try {
         .option('-t, --title <title>', 'title name');
     commander.command('initialize').action(() => {
         initialize();
+        injector();
+        index();
+        swaggerIndex();
     });
     commander.command('entity [className]').action((className) => {
         if (!className) {
@@ -76,6 +79,7 @@ try {
     });
     commander.command('index').action((className) => {
         index();
+        swaggerIndex();
     });
     commander
         .command('generate [className]')

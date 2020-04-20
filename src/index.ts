@@ -14,6 +14,9 @@ try {
     
   commander.command('initialize').action(() => {
     initialize()
+    injector()
+    index()
+    swaggerIndex()
   })
 
   commander.command('entity [className]').action((className: string) => {
@@ -87,6 +90,7 @@ try {
 
   commander.command('index').action((className: string) => {
     index()
+    swaggerIndex()
   })
   
   commander

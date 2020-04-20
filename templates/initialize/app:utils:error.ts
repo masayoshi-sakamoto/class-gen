@@ -9,8 +9,16 @@ export async function errors(error: any, App: IApp, logService: LogService): Pro
     return '/logout'
   } else if (error.status === 422 || error.status === 429) {
     App.state.errors = error.raw.response.data.errors
+  } else if (error.status === 404) {
+    throw new NotFouneException(error.raw.response.data.message)
   } else {
     App.state.errors = { message: error.raw.response.data.message }
   }
   return false
+}
+
+class NotFouneException {
+  constructor(message: string) {
+    return { message, statusCode: 404 }
+  }
 }
