@@ -1,3 +1,4 @@
+import MeEntity, { EmptyMeEntityFactory } from '@/entities/Me'
 import MenuEntity from '@/entities/Menu'
 
 export interface IAppState {
@@ -5,6 +6,7 @@ export interface IAppState {
   drawer: boolean | null
   errors: object
   loading: boolean
+  me: MeEntity
   menus: MenuEntity[]
   url: string
 }
@@ -14,6 +16,7 @@ export const state = (): IAppState => ({
   drawer: null,
   errors: {},
   loading: false,
+  me: EmptyMeEntityFactory(),
   menus: [],
   url: '/'
 })

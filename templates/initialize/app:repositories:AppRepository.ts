@@ -2,6 +2,7 @@ import { NuxtCookies } from 'cookie-universal-nuxt'
 import { Store } from 'vuex'
 import { RootState } from '@/store'
 import * as types from '@/store/app/types'
+import MeEntity from '@/entities/Me'
 import MenuEntity from '@/entities/Menu'
 
 export default class AppRepository {
@@ -43,6 +44,14 @@ export default class AppRepository {
 
   get loading(): boolean {
     return this._store.state.app.loading
+  }
+
+  set me(value: MeEntity) {
+    this._store.commit(new types.Me(value))
+  }
+
+  get me(): MeEntity {
+    return this._store.state.app.me
   }
 
   set menus(value: MenuEntity[]) {

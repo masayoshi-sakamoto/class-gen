@@ -29,7 +29,7 @@ export class APIClient {
           url: request.path,
           method: 'POST',
           params: isRead && request.params,
-          data: !isRead && this.encodedParams(request.params),
+          data: !isRead && this.encodedParams(request),
           timeout: this.timeout,
           baseURL: request.baseURL || this.baseURL,
           headers: this.createHeaders(request),
@@ -73,13 +73,22 @@ export class APIClient {
     }
   }
 
-  private encodedParams(params: any) {
-    if (!params) return params
-    const urlParams = new FormData()
-    Object.entries<string>(params).map(([key, value]) => {
-      urlParams.append(key, value)
-    })
-    return urlParams
+  private encodedParams(request: any) {
+    const params = request.params
+    if (request.contentType === 'multipart/form-data') {
+      const urlParams = new FormData()
+      Object.entries<string>(params).map(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach((entry) => {
+            urlParams.append(key + '[]', JSON.stringify(entry))
+          })
+        } else {
+          urlParams.append(key, value)
+        }
+      })
+      return urlParams
+    }
+    return params
   }
 
   // Create headers

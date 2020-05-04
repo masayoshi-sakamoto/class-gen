@@ -2,7 +2,9 @@
 import { Context } from '@nuxt/types/app'
 import Vue from 'vue'
 
-import { APIClient as <%= appName %>APIClient } from '@/infrastructure/network/<%= appName %>/APIClient'
+<%_ gateways.forEach((gateway) => { _%>
+import { APIClient as <%= gateway %>APIClient } from '@/infrastructure/network/<%= gateway %>/APIClient'
+<%_ }); _%>
 
 // Repositories
 import AppRepository from '@/repositories/AppRepository'
@@ -14,7 +16,9 @@ import <%= repository %> from '@/repositories/<%= repository %>'
 <%_ }}); _%>
 
 // Gateways
-import <%= appName %>Gateway from '@/gateways/<%= appName %>'
+<%_ gateways.forEach((gateway) => { _%>
+import <%= gateway %>Gateway from '@/gateways/<%= gateway %>'
+<%_ }); _%>
 
 // Services
 import LogService from '@/services/LogService'
@@ -29,7 +33,9 @@ const dummyLogger = {
 
 export default (ctx: Context) => {
   const { store, app } = ctx
-  const <%= appName.toLowerCase() %>APIClient = new <%= appName %>APIClient(ctx)
+  <%_ gateways.forEach((gateway) => { _%>
+  const <%= gateway.toLowerCase() %>APIClient = new <%= gateway %>APIClient(ctx)
+  <%_ }); _%>
 
   Vue.prototype.App = {
     state: new AppRepository(app.$cookies, store),
@@ -40,7 +46,9 @@ export default (ctx: Context) => {
     _%>
     <%= word %>: new <%= repository %>(store),
     <%_ }}); _%>
-    <%= appName.toLowerCase() %>Gateway: new <%= appName %>Gateway(<%= appName.toLowerCase() %>APIClient),
+    <%_ gateways.forEach((gateway) => { _%>
+    <%= gateway.toLowerCase() %>Gateway: new <%= gateway %>Gateway(<%= gateway.toLowerCase() %>APIClient),
+    <%_ }); _%>
     logService: new LogService(dummyLogger /* app.$sentry */)
   }
 
@@ -53,7 +61,9 @@ export default (ctx: Context) => {
     _%>
     <%= word %>: new <%= repository %>(store),
     <%_ }}); _%>
-    <%= appName.toLowerCase() %>Gateway: new <%= appName %>Gateway(<%= appName.toLowerCase() %>APIClient),
+    <%_ gateways.forEach((gateway) => { _%>
+    <%= gateway.toLowerCase() %>Gateway: new <%= gateway %>Gateway(<%= gateway.toLowerCase() %>APIClient),
+    <%_ }); _%>
     logService: new LogService(dummyLogger /* app.$sentry */)
   }
 }

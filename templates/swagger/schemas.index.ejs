@@ -3,7 +3,11 @@
 _%>
 <%_ values.forEach((file) => {
     const fileName = file.split('.')[0]
-    const FileName = fileName.charAt(0).toUpperCase() + fileName.slice(1)
+    const names = fileName.split('_')
+    let FileName = ''
+    names.forEach((name) => {
+      FileName += name.charAt(0).toUpperCase() + name.slice(1)
+    })
 _%>
 <%_ if (fileName === 'index') {_%>
 <%= ClassName %>:

@@ -1,5 +1,6 @@
 required:
   - id
+  - username
   - name
   - email
 type: "object"

@@ -1,3 +1,4 @@
+import MeEntity from '@/entities/Me'
 import MenuEntity from '@/entities/Menu'
 
 export const Types = {
@@ -5,6 +6,7 @@ export const Types = {
   drawer: 'drawer',
   errors: 'errors',
   loading: 'loading',
+  me: 'me',
   menus: 'menus',
   refresh: 'refresh',
   url: 'url'
@@ -30,6 +32,11 @@ export class Errors implements FluxStandardAction<any> {
 export class Loading implements FluxStandardAction<boolean> {
   type = path + Types.loading
   constructor(public payload: boolean) {}
+}
+
+export class Me implements FluxStandardAction<MeEntity> {
+  type = path + Types.me
+  constructor(public payload: MeEntity) {}
 }
 
 export class Menus implements FluxStandardAction<MenuEntity[]> {

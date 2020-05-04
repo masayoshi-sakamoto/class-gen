@@ -11,7 +11,9 @@ import <%= repository %> from '@/repositories/<%= repository %>'
 <%_ }}); _%>
 
 // Gateways
-import <%= appName %>Gateway from '@/gateways/<%= appName %>'
+<%_ gateways.forEach((gateway) => { _%>
+import <%= gateway %>Gateway from '@/gateways/<%= gateway %>'
+<%_ }); _%>
 
 // Services
 import LogService from '@/services/LogService'
@@ -36,7 +38,9 @@ export interface IApp {
   <%_ }}); _%>
 
   // Gateways
-  <%= appName.toLowerCase() %>Gateway: <%= appName %>Gateway
+  <%_ gateways.forEach((gateway) => { _%>
+  <%= gateway.toLowerCase() %>Gateway: <%= gateway %>Gateway
+  <%_ }); _%>
 
   // Services
   logService: LogService

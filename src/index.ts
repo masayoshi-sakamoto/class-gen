@@ -341,17 +341,17 @@ function injector() {
   const appName = commander.appname.charAt(0).toUpperCase() + commander.appname.slice(1)
   
   init()
-  const read = makeDir(commander.dist, 'repositories')
-  const repositories = fs.readdirSync(read)
+  const repositories = fs.readdirSync(makeDir(commander.dist, 'repositories'))
+  const gateways = fs.readdirSync(makeDir(commander.dist, 'gateways'))
 
   let dist = makeDir(commander.dist, 'plugins')
-  generator({ type, dist, name: '', outfile: 'injector', filename: 'plugins', options: { repositories, appName } })
+  generator({ type, dist, name: '', outfile: 'injector', filename: 'plugins', options: { repositories, gateways, appName } })
 
   dist = makeDir(commander.dist, 'presenter')
-  generator({ type, dist, name: '', outfile: 'injector', filename: 'presenter', options: { repositories, appName } })
+  generator({ type, dist, name: '', outfile: 'injector', filename: 'presenter', options: { repositories, gateways, appName } })
 
   dist = makeDir(commander.dist, 'types')
-  generator({ type, dist, name: '', outfile: 'nuxt.d', filename: 'types', options: { repositories, appName } })
+  generator({ type, dist, name: '', outfile: 'nuxt.d', filename: 'types', options: { repositories, gateways, appName } })
 }
 
 function index() {

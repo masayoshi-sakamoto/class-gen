@@ -11,7 +11,7 @@ export interface RootState {
   <%_ files.forEach((file) => {
     const store = file.split('.')[0]
     const Store = store.charAt(0).toUpperCase() + store.slice(1)
-    if (store !== 'index') {
+    if (store !== 'index' && store !== 'README') {
   _%>
   <%= store %>: <%= store %>.I<%= Store %>State
   <%_ }}); _%>
@@ -23,7 +23,7 @@ const createStore = () => {
       <%_ files.forEach((file) => {
         const store = file.split('.')[0]
         const Store = store.charAt(0).toUpperCase() + store.slice(1)
-        if (store !== 'index' && store !== 'app') {
+        if (store !== 'index' && store !== 'app' && store !== 'README') {
       _%>
       <%= store %>: <%= store %>.store,
       <%_ }}); _%>
