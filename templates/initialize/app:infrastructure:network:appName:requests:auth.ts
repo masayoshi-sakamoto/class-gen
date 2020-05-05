@@ -3,6 +3,16 @@ import { APIRequest } from '@/infrastructure/network/APIRequest'
 import { HTTPMethod } from '@/infrastructure/network/types'
 import { Login as LoginSchema, Signup as SignupSchema } from '@/infrastructure/network/<%= appName %>/schema'
 
+export class Activate implements APIRequest<<%= appName %>.Auth.getActivateResponse> {
+  response: <%= appName %>.Auth.getActivateResponse
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.GET
+  constructor(id: string) {
+    this.path = `/activate/${id}`
+  }
+}
+
 export class Login implements APIRequest<<%= appName %>.Auth.authLoginResponse> {
   response: <%= appName %>.Auth.authLoginResponse
   path: string

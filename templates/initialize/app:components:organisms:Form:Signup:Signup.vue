@@ -34,7 +34,7 @@
           required
         ></v-text-field>
       </validation-provider>
-      <validation-provider v-slot="{ errors }" rules="required|email" name="メールアドレス">
+      <validation-provider v-if="props.id === ''" v-slot="{ errors }" rules="required|email" name="メールアドレス">
         <v-text-field
           v-model="props.email"
           :error-messages="App.state.errors.email ? App.state.errors.email : errors[0]"

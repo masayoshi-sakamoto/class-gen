@@ -1,0 +1,25 @@
+get:
+  tags:
+    - Auth
+  operationId: getActivate
+  description: Auth Activate
+  parameters:
+    - in: path
+      name: id
+      schema:
+        type: string
+        example: unique_user_id
+      required: true
+      description: User ID
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - activate
+            type: object
+            properties:
+              activate:
+                $ref: "#/components/schemas/Activate"

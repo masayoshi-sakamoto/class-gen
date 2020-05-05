@@ -1,10 +1,14 @@
 required:
+  - id
   - username
   - password
   - email
   - name
 type: "object"
 properties:
+  id:
+    type: string
+    example: 'unique_invitation_id'
   username:
     type: string
     example: 'username'

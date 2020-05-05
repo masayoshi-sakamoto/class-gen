@@ -25,11 +25,22 @@ export default Vue.extend({
     LayoutAuth,
     FormSignup
   },
+  props: {
+    invitationId: {
+      type: String,
+      default: ''
+    }
+  },
   data(): IData {
     return {
       entity: EmptySignupEntityFactory()
     }
   },
+  created() {
+    this.entity = EmptySignupEntityFactory({
+      id: this.invitationId
+    })
+  },  
   methods: {
     submit(entity: SignupEntity) {
       this.$emit('submit', entity)

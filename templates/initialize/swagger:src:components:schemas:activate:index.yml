@@ -1,0 +1,12 @@
+required:
+  - id
+  - is_activate
+type: "object"
+properties:
+  id:
+    type: string
+    example: 'unique_user_id'
+  is_activate:
+    type: integer
+    format: int32
+    example: 0    

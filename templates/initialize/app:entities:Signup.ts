@@ -1,4 +1,5 @@
 export interface ISignupProps {
+  id: string
   username: string
   password: string
   email: string
@@ -14,6 +15,10 @@ export default class SignupEntity {
 
   get props(): ISignupProps {
     return this._props
+  }
+
+  get id(): string {
+    return this._props.id
   }
 
   get username(): string {
@@ -34,6 +39,7 @@ export default class SignupEntity {
 }
 
 export const EmptySignupPropsFactory = (props?: Partial<ISignupProps>): ISignupProps => ({
+  id: '',
   username: '',
   password: '',
   email: '',
@@ -42,6 +48,7 @@ export const EmptySignupPropsFactory = (props?: Partial<ISignupProps>): ISignupP
 })
 
 export const SignupPropsFactory = (props?: Partial<ISignupProps>): ISignupProps => ({
+  id: '',
   username: 'username',
   password: '',
   email: 'username@example.com',

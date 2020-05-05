@@ -3,8 +3,9 @@ import { Signup } from '@/infrastructure/network/<%= appName %>/schema'
 import { ISignupProps } from '@/entities/Signup'
 
 export const toSignupProps = (props: Signup): ISignupProps => {
-  const { username, password, email, name } = props
+  const { id, username, password, email, name } = props
   return {
+    id,
     username,
     password,
     email,
@@ -13,8 +14,9 @@ export const toSignupProps = (props: Signup): ISignupProps => {
 }
 
 export const toSignupSeed = (props: ISignupProps): Signup => {
-  const { username, password, email, name } = props
+  const { id, username, password, email, name } = props
   return {
+    id,
     username,
     password,
     email,
