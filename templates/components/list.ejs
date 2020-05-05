@@ -38,7 +38,9 @@
         :items-per-page="props.itemsPerPage"
         hide-default-footer
         @page-count="props.pageCount = $event"
-        @update:options="pages"
+        @update:page="pages"
+        @update:sort-by="pages"
+        @update:sort-desc="pages"
       >
         <template v-slot:no-data>
           検索結果はありません。
@@ -152,11 +154,9 @@ export default Vue.extend({
       this.$emit('fetch', new OptionsEntity(props))
     },
     pages() {
-      if (this.options.page !== this.props.page) {
-        const props = EmptyOptionsPropsFactory(this.props)
-        props.search = this.word
-        this.$emit('fetch', new OptionsEntity(props))
-      }
+      const props = EmptyOptionsPropsFactory(this.props)
+      props.search = this.word
+      this.$emit('fetch', new OptionsEntity(props))
     }
   }
 })
