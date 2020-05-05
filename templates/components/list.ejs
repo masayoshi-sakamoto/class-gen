@@ -3,12 +3,19 @@
     <v-btn width="240" color="primary" tile elevation="0" @click.stop="open(null)">
       <strong><v-icon left>mdi-plus</v-icon><%= japanese %>の追加</strong>
     </v-btn>
-    <div v-if="items.length === 0">
+    <div v-if="word === '' && items.length === 0">
       <p class="my-6 text-center"><%= japanese %>の追加を行ってください。</p>
     </div>
     <template v-else>
       <v-row>
-        <v-col cols="12" offset-md="8" md="4">
+        <v-col cols="12" md="8">
+          <div class="d-flex align-center fill-height body-1 pt-3">
+            <div class="ml-2">{{ options.start }} - {{ options.end }}件</div>
+            <div class="ml-3">/</div>
+            <div class="ml-3">{{ options.total }}件</div>
+          </div>
+        </v-col>
+        <v-col cols="12" md="4">
           <v-form @submit.prevent="search(true)">
             <v-text-field
               v-model="word"
@@ -33,6 +40,9 @@
         @page-count="props.pageCount = $event"
         @update:options="pages"
       >
+        <template v-slot:no-data>
+          検索結果はありません。
+        </template>
         <template v-slot:item.actions="{ item }">
           <v-icon small class="mr-3" @click="open(item)">
             mdi-pencil
@@ -142,9 +152,11 @@ export default Vue.extend({
       this.$emit('fetch', new OptionsEntity(props))
     },
     pages() {
-      const props = EmptyOptionsPropsFactory(this.props)
-      props.search = this.word
-      this.$emit('fetch', new OptionsEntity(props))
+      if (this.options.page !== this.props.page) {
+        const props = EmptyOptionsPropsFactory(this.props)
+        props.search = this.word
+        this.$emit('fetch', new OptionsEntity(props))
+      }
     }
   }
 })

@@ -49,6 +49,15 @@ export default class OptionsEntity {
     return this._props.pageCount
   }
 
+  get start(): number {
+    return this._props.total === 0 ? 0 : (this._props.page - 1) * this._props.itemsPerPage + 1
+  }
+
+  get end(): number {
+    const end = this._props.page * this._props.itemsPerPage
+    return end > this._props.total ? this._props.total : end
+  }
+  
   get params(): IParamsProps {
     const page = this._props.page - 1
     const params: IParamsProps = {
