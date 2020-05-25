@@ -62,7 +62,7 @@
         class="mt-5"
       ></v-pagination>
     </template>
-    <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>の追加">
+    <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>登録">
       <Form<%= name %> v-model="entity" @submit="save"></Form<%= name %>>
     </Dialog>
     <Destroy v-model="dialog" @destroy="destroy">
