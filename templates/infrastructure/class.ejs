@@ -18,9 +18,9 @@ export class Get<%= names %> implements APIRequest<<%= appName %>.<%= name %>.ge
   path: string
   contentType = 'application/json'
   method = HTTPMethod.GET
-  params: IParamsProps
-  constructor(params: IParamsProps) {
-    this.params = params
+  params: IParamsProps | undefined
+  constructor(params?: IParamsProps) {
+    this.params = params ? params : undefined
     this.path = '/<%= names.toLowerCase() %>'
   }
 }

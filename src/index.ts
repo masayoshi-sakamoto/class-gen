@@ -246,6 +246,7 @@ function usecase(className: string) {
   init()
   const dist = makeDir(makeDir(commander.dist, type), name.toLowerCase())
   generator({ type, dist, name, outfile: 'Delete' + name + 'UseCase', filename: 'delete', options: { name, names, appName } })
+  generator({ type, dist, name, outfile: 'Fetch' + name + 'UseCase', filename: 'get', options: { name, names, appName } })
   generator({ type, dist, name, outfile: 'Fetch' + names + 'UseCase', filename: 'fetch', options: { name, names, appName } })
   generator({ type, dist, name, outfile: 'Save' + name + 'UseCase', filename: 'save', options: { name, names, appName } })
   generator({ type, dist, name, outfile: 'Update' + names + 'UseCase', filename: 'update', options: { name, names, appName } })

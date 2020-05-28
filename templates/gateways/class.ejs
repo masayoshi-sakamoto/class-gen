@@ -6,13 +6,14 @@ import <%= name %>Entity, { I<%= name %>Props } from '@/entities/<%= name %>'
 import OptionsEntity, { EmptyOptionsPropsFactory, IOptionsProps } from '@/entities/Options'
 
 export default class <%= name %> extends <%= appName %>GatewayBase {
-  async Get<%= name %>(id: string): Promise<I<%= name %>Props | null> {
+  async Get<%= name %>(id: string): Promise<I<%= name %>Props> {
     const { <%= name.toLowerCase() %> } = await this.apiClient.request(new Get<%= name %>(id))
-    return <%= name.toLowerCase() %> ? to<%= name %>Props(<%= name.toLowerCase() %>) : null
+    return <%= name.toLowerCase() %> ? to<%= name %>Props(<%= name.toLowerCase() %>) : Empty<%= name %>PropsFactory()
   }
 
-  async Get<%= names %>(entity: OptionsEntity): Promise<{ props: I<%= name %>Props[]; options: IOptionsProps }> {
-    const { <%= names.toLowerCase() %>, options } = await this.apiClient.request(new Get<%= names %>(entity.params))
+  async Get<%= names %>(entity?: OptionsEntity): Promise<{ props: I<%= name %>Props[]; options: IOptionsProps }> {
+    const params = entity ? entity.params : undefined
+    const { <%= names.toLowerCase() %>, options } = await this.apiClient.request(new Get<%= names %>(params))
     const params = {
       props: <%= names.toLowerCase() %> ? <%= names.toLowerCase() %>.map((prop) => to<%= name %>Props(prop)) : [],
       options: options ? toOptionsProps(options) : EmptyOptionsPropsFactory()
