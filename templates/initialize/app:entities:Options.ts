@@ -5,7 +5,7 @@ export interface IOptionsProps {
   pageCount: number
   sortBy: string[]
   sortDesc: boolean[]
-  search?: string
+  search: string
 }
 
 export interface IParamsProps {
@@ -106,6 +106,7 @@ export const EmptyOptionsPropsFactory = (props?: Partial<IOptionsProps>): IOptio
   pageCount: 0,
   sortBy: [],
   sortDesc: [],
+  search: '',
   ...props
 })
 

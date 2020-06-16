@@ -7,13 +7,14 @@ export const toOptionsProps = (props: Options): IOptionsProps => {
     return EmptyOptionsPropsFactory()
   }
 
-  const { total, page, take, count } = props
+  const { total, page, take, count, search, sort, desc } = props
   return {
     total,
     page,
     itemsPerPage: take,
     pageCount: count,
-    sortBy: [],
-    sortDesc: []
+    sortBy: [sort],
+    sortDesc: [desc],
+    search
   }
 }

@@ -3,6 +3,9 @@ required:
   - page
   - take
   - count
+  - sort
+  - desc
+  - search
 type: "object"
 properties:
   total:
@@ -21,3 +24,12 @@ properties:
     type: integer
     format: int32
     example: 0
+  sort:
+    type: string
+    example: '検索'
+  desc:
+    type: boolean
+    example: false
+  search:
+    type: string
+    example: '検索'
