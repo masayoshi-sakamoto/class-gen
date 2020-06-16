@@ -14,7 +14,7 @@
           <Search v-model="items.options.props.search" label="検索ワード" @change="fetch"></Search>
         </v-col>
       </v-row>
-      <List<%= name %> :value="items" @change="fetch" @edit="open" @remove="remove"></List<%= name %>>
+      <List<%= name %> :items="items" @change="fetch" @edit="open" @remove="remove"></List<%= name %>>
       <Pagination v-model="items.options" @change="fetch"></Pagination>
     </v-container>
     <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>登録">

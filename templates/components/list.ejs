@@ -12,7 +12,6 @@
       検索結果はありません。
     </template>
     <template v-slot:item.actions="{ item }">
-      <v-btn elevation="0" class="mr-3" small outlined color="primary" @click="push(item)">詳細</v-btn>
       <v-icon small class="mr-3" @click="edit(item)">mdi-pencil</v-icon>
       <v-icon small @click="remove(item)">mdi-delete</v-icon>
     </template>
@@ -43,15 +42,15 @@ export default Vue.extend({
     }
   },
   methods: {
+    edit(value: <%= name %>Entity) {
+      this.$emit('edit', value)
+    },
+    remove(value: <%= name %>Entity) {
+      this.$emit('remove', value)
+    },
     change() {
       this.items.options.options = this.options
       this.$emit('change')
-    },
-    push(enitity: <%= name %>Entity) {
-      this.$router.push({
-        name: '<%= name.toLowerCase() %>-id',
-        params: { id: enitity.id }
-      })
     }
   }
 })
