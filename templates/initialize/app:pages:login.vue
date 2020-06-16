@@ -21,6 +21,7 @@ export default Vue.extend({
         const usecase = new LoginUseCase(this.App)
         this.App.state.loading = true
         this.$router.push(await usecase.execute(entity))
+        this.App.state.loading = false
       } catch (error) {
         this.App.state.loading = false
         if (error.statusCode === 401) {
