@@ -18,12 +18,12 @@ export default Vue.extend({
       const usecase = new LogoutUseCase(App)
       await usecase.execute()
     } catch (error) {
-      App.state.refresh()
+      App.state.clear()
       redirect('/login')
     }
   },
   created() {
-    this.App.state.refresh()
+    this.App.state.clear()
     this.$router.push('/login')
   }
 })
