@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import { MutationTree } from 'vuex'
 import { IAppState, state as init } from '@/store/app'
-import { Types, Loading, Errors, Dialog, Drawer, Me, Menus, Url } from '@/store/app/types'
+import { Types, Loading, Errors, Expired, Dialog, Drawer, Me, Menus, Url } from '@/store/app/types'
 
 const mutations: MutationTree<IAppState> = {
   [Types.dialog]: (state, action: Dialog) => {

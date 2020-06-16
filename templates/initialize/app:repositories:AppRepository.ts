@@ -66,9 +66,9 @@ export default class AppRepository {
     return this._store.state.app.menus
   }
 
-  refresh() {
+  clear() {
     this.token = ''
-    this._store.commit(new types.Refresh())
+    this._store.commit(new types.Clear())
   }
 
   set token(value: string) {

@@ -13,7 +13,7 @@ export default class LoginUseCase implements BaseUseCase {
     try {
       state.token = await <%= appName.toLowerCase() %>Gateway.Auth.Login(entity)
     } catch (error) {
-      const url = await errors(error, this.app, logService)
+      await errors(error, this.app, logService)
     }
     return this.app.state.url ? this.app.state.url : '/'
   }

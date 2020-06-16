@@ -8,13 +8,13 @@ export default class SignupUseCase implements BaseUseCase {
     this.app = app
   }
 
-  async execute(entity: SignupEntity): Promise<boolean> {
+  async execute(entity: SignupEntity): Promise<string> {
     const { state, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       state.token = await <%= appName.toLowerCase() %>Gateway.Auth.Signup(entity)
-      return this.app.state.url
     } catch (error) {
-      return await errors(error, this.app, logService)
+      await errors(error, this.app, logService)
     }
+    return this.app.state.url ? this.app.state.url : '/'
   }
 }

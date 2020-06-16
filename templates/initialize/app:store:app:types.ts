@@ -5,6 +5,7 @@ export const Types = {
   dialog: 'dialog',
   drawer: 'drawer',
   errors: 'errors',
+  expired: 'expired',
   loading: 'loading',
   me: 'me',
   menus: 'menus',

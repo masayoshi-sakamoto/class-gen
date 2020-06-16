@@ -3,8 +3,8 @@ export interface IOptionsProps {
   page: number
   itemsPerPage: number
   pageCount: number
-  sortBy?: string[]
-  sortDesc?: boolean[]
+  sortBy: string[]
+  sortDesc: boolean[]
   search?: string
 }
 
@@ -16,6 +16,17 @@ export interface IParamsProps {
   search?: string
 }
 
+export interface IOptions {
+  page: number
+  itemsPerPage: number
+  sortBy: string[]
+  sortDesc: boolean[]
+  groupBy: string[]
+  groupDesc: boolean[]
+  multiSort: boolean
+  mustSort: boolean
+}
+
 export default class OptionsEntity {
   private _props: IOptionsProps
 
@@ -24,13 +35,22 @@ export default class OptionsEntity {
   }
 
   get props(): IOptionsProps {
-    return {
-      total: this._props.total,
-      page: this._props.page,
-      itemsPerPage: this._props.itemsPerPage,
-      pageCount: this._props.pageCount,
-      search: this._props.search
+    return this._props
+  }
+
+  set props(value: IOptionsProps) {
+    this._props = value
+  }
+
+  set options(value: IOptions) {
+    this._props = {
+      ...this._props,
+      ...value
     }
+  }
+
+  get options(): IOptions {
+    return OptionsFactory(this._props)
   }
 
   get total(): number {
@@ -41,12 +61,20 @@ export default class OptionsEntity {
     return this._props.page
   }
 
+  set page(value: number) {
+    this._props.page = value
+  }
+
   get itemsPerPage(): number {
     return this._props.itemsPerPage
   }
 
   get pageCount(): number {
     return this._props.pageCount
+  }
+
+  set pageCount(value: number) {
+    this._props.pageCount = value
   }
 
   get start(): number {
@@ -57,7 +85,7 @@ export default class OptionsEntity {
     const end = this._props.page * this._props.itemsPerPage
     return end > this._props.total ? this._props.total : end
   }
-  
+
   get params(): IParamsProps {
     const page = this._props.page - 1
     const params: IParamsProps = {
@@ -84,3 +112,14 @@ export const EmptyOptionsPropsFactory = (props?: Partial<IOptionsProps>): IOptio
 export const EmptyOptionsEntityFactory = (props?: Partial<IOptionsProps>): OptionsEntity => {
   return new OptionsEntity(EmptyOptionsPropsFactory(props))
 }
+
+export const OptionsFactory = (props: IOptionsProps): IOptions => ({
+  page: props.page,
+  itemsPerPage: props.itemsPerPage,
+  sortBy: props.sortBy,
+  sortDesc: props.sortDesc,
+  groupBy: [],
+  groupDesc: [],
+  multiSort: false,
+  mustSort: false
+})

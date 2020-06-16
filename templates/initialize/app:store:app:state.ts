@@ -5,6 +5,7 @@ export interface IAppState {
   dialog: object
   drawer: boolean | null
   errors: object
+  expired: number
   loading: boolean
   me: MeEntity
   menus: MenuEntity[]
@@ -15,6 +16,7 @@ export const state = (props?: Partial<IAppState>): IAppState => ({
   dialog: {},
   drawer: null,
   errors: {},
+  expired: 0,
   loading: false,
   me: EmptyMeEntityFactory(),
   menus,

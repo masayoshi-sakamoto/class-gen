@@ -13,7 +13,7 @@ export default Vue.extend({
     AuthSignin
   },
   created() {
-    this.App.state.refresh()
+    this.App.state.clear()
   },
   methods: {
     async login(entity: LoginEntity) {

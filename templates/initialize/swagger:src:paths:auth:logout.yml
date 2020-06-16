@@ -1,0 +1,17 @@
+get:
+  tags:
+    - Auth
+  operationId: autLogout
+  description: Auth Logout
+  responses:
+    '200':
+      description: OK
+      content:
+        application/json:
+          schema:
+            required:
+              - logout
+            type: object
+            properties:
+              logout:
+                $ref: "#/components/schemas/Me"

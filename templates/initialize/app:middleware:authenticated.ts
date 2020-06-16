@@ -11,7 +11,7 @@ const authenticated: Middleware = async ({ App, redirect, route }: Context) => {
     }
 
     if (App.state.token === '') {
-      App.state.refresh()
+      App.state.clear()
       App.state.url = route.fullPath === '/logout' ? '/' : route.fullPath
       redirect('/login')
       return
@@ -25,7 +25,7 @@ const authenticated: Middleware = async ({ App, redirect, route }: Context) => {
     App.state.menus = menus
   } catch (e) {
     if (route.name !== 'login') {
-      App.state.refresh()
+      App.state.clear()
       App.state.url = route.fullPath === '/logout' ? '/' : route.fullPath
       return redirect('/login')
     }
