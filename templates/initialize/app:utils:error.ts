@@ -1,7 +1,7 @@
 import LogService, { LogType } from '@/services/LogService'
 import { IApp } from '@/types/nuxt'
 
-export async function errors(error: any, App: IApp, logService: LogService): Promise<boolean | string> {
+export async function errors(error: any, App: IApp, logService: LogService): Promise<boolean> {
   if (error.status === undefined || error.status === 500) {
     await logService.handle({ type: LogType.Error, error })
     App.state.errors = { message: '不正なエラーが発生しました。' }
