@@ -1,10 +1,13 @@
 {
   "name": "@masayoshi-sakamoto/class-gen",
-  "version": "1.5.14",
+  "version": "1.5.15",
   "bin": {
     "class-gen": "./bin/class-gen.js"
   },
   "license": "MIT",
+  "scripts": {
+    "build": "tsc"
+},  
   "dependencies": {
     "commander": "^5.0.0",
     "ejs": "^3.0.2",

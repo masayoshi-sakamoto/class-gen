@@ -9,7 +9,7 @@ export default class Delete<%= name %>UseCase implements BaseUseCase {
   }
 
   async execute(entity: <%= name %>Entity) {
-    const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
+    const { <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       await <%= appName.toLowerCase() %>Gateway.<%= name %>.Delete<%= name %>(entity.id)
       <%= name.toLowerCase() %>.delete(entity.props)

@@ -9,7 +9,7 @@ export default class Update<%= names %>UseCase implements BaseUseCase {
   }
 
   async execute(entities: <%= name %>Entity[]) {
-    const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
+    const { <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       const exec = entities.map((entity) => <%= appName.toLowerCase() %>Gateway.<%= name %>.Put<%= name %>(entity))
       await Promise.all(exec).then((response) => {

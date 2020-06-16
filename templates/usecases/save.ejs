@@ -9,7 +9,7 @@ export default class Save<%= name %>UseCase implements BaseUseCase {
   }
 
   async execute(entity: <%= name %>Entity) {
-    const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
+    const { <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       const res = entity.id ? await <%= appName.toLowerCase() %>Gateway.<%= name %>.Put<%= name %>(entity) : await <%= appName.toLowerCase() %>Gateway.<%= name %>.Post<%= name %>(entity)
       if (res) {

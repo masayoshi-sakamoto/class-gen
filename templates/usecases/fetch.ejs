@@ -9,7 +9,7 @@ export default class Fetch<%= names %>UseCase implements BaseUseCase {
   }
 
   async execute(entity?: OptionsEntity) {
-    const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
+    const { <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       const { props, options } = await <%= appName.toLowerCase() %>Gateway.<%= name %>.Get<%= names %>(entity)
       <%= name.toLowerCase() %>.save([])

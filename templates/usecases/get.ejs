@@ -8,7 +8,7 @@ export default class Fetch<%= name %>UseCase implements BaseUseCase {
   }
 
   async execute(id: string) {
-    const { state, <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
+    const { <%= name.toLowerCase() %>, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       const props = await <%= appName.toLowerCase() %>Gateway.<%= name %>.Get<%= name %>(id)
       <%= name.toLowerCase() %>.save(props)
