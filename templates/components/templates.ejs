@@ -11,7 +11,7 @@
           <Counter :value="items.options"></Counter>
         </v-col>
         <v-col cols="12" sm="6" md="5">
-          <Search v-model="items.options.props.search" label="検索ワード" @change="fetch"></Search>
+          <Search v-model="items.options.props.search" label="検索ワード" @change="fetch(true)"></Search>
         </v-col>
       </v-row>
       <List<%= name %> :items="items" @change="fetch" @edit="open" @remove="remove"></List<%= name %>>
@@ -78,8 +78,8 @@ export default Vue.extend({
       this.item = entity || Empty<%= name %>EntityFactory()
       this.App.state.setDialog('<%= name.toLowerCase() %>', true)
     },
-    fetch() {
-      this.$emit('fetch', this.items.options)
+    fetch(reload?: boolean) {
+      this.$emit('fetch', this.items.options, reload)
     },
     save(entity: <%= name %>Entity) {
       this.$emit('save', entity)
