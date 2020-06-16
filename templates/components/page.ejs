@@ -9,7 +9,6 @@ import <%= name %> from '@/components/templates/<%= name %>'
 import Fetch<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Fetch<%= names %>UseCase'
 import Save<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Save<%= name %>UseCase'
 import Delete<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Delete<%= name %>UseCase'
-import Update<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Update<%= names %>UseCase'
 import { I<%= name %>List } from '@/entities/<%= name %>'
 import OptionsEntity from '@/entities/Options'
 import { validate } from '@/utils/options'
@@ -53,8 +52,8 @@ export default Vue.extend({
         this.App.state.loading = false
       }
     },
-    async save(entity: <%= names %>Entity) {
-      const usecase = new Save<%= names %>UseCase(this.App)
+    async save(entity: <%= name %>Entity) {
+      const usecase = new Save<%= name %>UseCase(this.App)
       this.App.state.loading = true
       if (await usecase.execute(entity)) {
         this.fetch(this.App.<%= name.toLowerCase() %>.options(), true)
@@ -62,8 +61,8 @@ export default Vue.extend({
       }
       this.App.state.loading = false
     },
-    async destroy(entity: <%= names %>Entity) {
-      const usecase = new Delete<%= names %>UseCase(this.App)
+    async destroy(entity: <%= name %>Entity) {
+      const usecase = new Delete<%= name %>UseCase(this.App)
       this.App.state.loading = true
       if (await usecase.execute(entity)) {
         this.fetch(this.App.<%= name.toLowerCase() %>.options(), true)
