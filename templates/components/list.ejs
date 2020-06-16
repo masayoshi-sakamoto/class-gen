@@ -1,162 +1,57 @@
 <template>
-  <v-container fluid>
-    <v-btn width="240" color="primary" tile elevation="0" @click.stop="open(null)">
-      <strong><v-icon left>mdi-plus</v-icon><%= japanese %>の追加</strong>
-    </v-btn>
-    <div v-if="word === '' && items.length === 0">
-      <p class="my-6 text-center"><%= japanese %>の追加を行ってください。</p>
-    </div>
-    <template v-else>
-      <v-row>
-        <v-col cols="12" md="8">
-          <div class="d-flex align-center fill-height body-1 pt-3">
-            <div class="ml-2">{{ options.start }} - {{ options.end }}件</div>
-            <div class="ml-3">/</div>
-            <div class="ml-3">{{ options.total }}件</div>
-          </div>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-form @submit.prevent="search(true)">
-            <v-text-field
-              v-model="word"
-              append-icon="mdi-magnify"
-              label="検索ワード"
-              clearable
-              single-line
-              hide-details
-              @click:clear="search(false)"
-            ></v-text-field>
-          </v-form>
-        </v-col>
-      </v-row>
-      <v-data-table
-        :headers="headers"
-        :items="items"
-        :page.sync="props.page"
-        :options.sync="props"
-        :server-items-length="props.total"
-        :items-per-page="props.itemsPerPage"
-        hide-default-footer
-        @page-count="props.pageCount = $event"
-        @update:page="pages"
-        @update:sort-by="pages"
-        @update:sort-desc="pages"
-      >
-        <template v-slot:no-data>
-          検索結果はありません。
-        </template>
-        <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-3" @click="open(item)">
-            mdi-pencil
-          </v-icon>
-          <v-icon small @click="remove(item)">
-            mdi-delete
-          </v-icon>
-        </template>
-      </v-data-table>
-      <v-pagination
-        v-if="props.pageCount > 1"
-        v-model="props.page"
-        :total-visible="7"
-        :length="props.pageCount"
-        class="mt-5"
-      ></v-pagination>
+  <v-data-table
+    :items="items.entities"
+    :headers="headers"
+    :options.sync="options"
+    :server-items-length="items.options.total"
+    :items-per-page="items.options.itemsPerPage"
+    hide-default-footer
+    @update:options="change"
+  >
+    <template v-slot:no-data>
+      検索結果はありません。
     </template>
-    <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>登録">
-      <Form<%= name %> v-model="entity" @submit="save"></Form<%= name %>>
-    </Dialog>
-    <Destroy v-model="dialog" @destroy="destroy">
-      <v-alert light border="top" colored-border prominent type="error">
-        <div class="title"><%= japanese %>の削除</div>
-        <%= japanese %>を削除します。
-      </v-alert>
-    </Destroy>
-  </v-container>
+    <template v-slot:item.actions="{ item }">
+      <v-btn elevation="0" class="mr-3" small outlined color="primary" @click="push(item)">詳細</v-btn>
+      <v-icon small class="mr-3" @click="edit(item)">mdi-pencil</v-icon>
+      <v-icon small @click="remove(item)">mdi-delete</v-icon>
+    </template>
+  </v-data-table>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import <%= name %>Entity, { headers, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
-import OptionsEntity, { IOptionsProps, EmptyOptionsPropsFactory } from '@/entities/Options'
-import Dialog from '@/components/molecules/Dialog'
-import Destroy from '@/components/molecules/Destroy'
-import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
+import <%= name %>Entity, { headers, I<%= name %>List } from '@/entities/<%= name %>'
+import { IOptions } from '@/entities/Options'
 
 interface IData {
-  headers: object[]
-  entity: <%= name %>Entity | null
-  dialog: boolean
-  items: <%= name %>Entity[]
-  props: IOptionsProps
-  word: string
+  headers: any[]
+  options: IOptions
 }
 
 export default Vue.extend({
-  components: {
-    Dialog,
-    Destroy,
-    Form<%= name %>
-  },
   props: {
-    value: {
-      type: Array as PropType<<%= name %>Entity[]>,
+    items: {
+      type: Object as PropType<I<%= name %>List>,
       required: true
-    },
-    options: {
-      type: Object as PropType<OptionsEntity>,
-      default: undefined
     }
   },
   data(): IData {
     return {
       headers,
-      entity: Empty<%= name %>EntityFactory(),
-      dialog: false,
-      items: this.value,
-      props: this.options.props,
-      word: ''
-    }
-  },
-  watch: {
-    value: {
-      handler() {
-        this.items = this.value
-      },
-      immediate: true
-    },
-    options: {
-      handler() {
-        this.props = this.options.props
-      },
-      immediate: true
+      options: this.items.options.options
     }
   },
   methods: {
-    open(entity: <%= name %>Entity | null) {
-      this.entity = entity || Empty<%= name %>EntityFactory()
-      this.App.state.setDialog('<%= name.toLowerCase() %>', true)
+    change() {
+      this.items.options.options = this.options
+      this.$emit('change')
     },
-    remove(entity: <%= name %>Entity) {
-      this.dialog = true
-      this.entity = entity
-    },
-    save(entity: <%= name %>Entity) {
-      this.$emit('save', entity)
-    },
-    destroy() {
-      this.dialog = false
-      this.$emit('destroy', this.entity)
-    },
-    search(value: boolean) {
-      const props = EmptyOptionsPropsFactory(this.props)
-      props.search = value ? this.word : undefined
-      props.page = 0
-      this.$emit('fetch', new OptionsEntity(props))
-    },
-    pages() {
-      const props = EmptyOptionsPropsFactory(this.props)
-      props.search = this.word
-      this.$emit('fetch', new OptionsEntity(props))
+    push(enitity: <%= name %>Entity) {
+      this.$router.push({
+        name: '<%= name.toLowerCase() %>-id',
+        params: { id: enitity.id }
+      })
     }
   }
 })

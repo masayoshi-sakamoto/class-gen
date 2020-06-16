@@ -8,7 +8,7 @@ export const Types = {
   loading: 'loading',
   me: 'me',
   menus: 'menus',
-  refresh: 'refresh',
+  clear: 'clear',
   url: 'url'
 }
 
@@ -29,6 +29,11 @@ export class Errors implements FluxStandardAction<any> {
   constructor(public payload: any) {}
 }
 
+export class Expired implements FluxStandardAction<number> {
+  type = path + Types.expired
+  constructor(public payload: number) {}
+}
+
 export class Loading implements FluxStandardAction<boolean> {
   type = path + Types.loading
   constructor(public payload: boolean) {}
@@ -44,8 +49,8 @@ export class Menus implements FluxStandardAction<MenuEntity[]> {
   constructor(public payload: MenuEntity[]) {}
 }
 
-export class Refresh implements FluxStandardAction<any> {
-  type = path + Types.refresh
+export class Clear implements FluxStandardAction<void> {
+  type = path + Types.clear
   constructor() {}
 }
 

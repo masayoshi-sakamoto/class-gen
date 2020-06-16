@@ -3,7 +3,8 @@ import { IOptionsProps } from '@/entities/Options'
 
 export const Types = {
   store: 'store',
-  remove: 'remove'
+  remove: 'remove',
+  clear: 'clear'
 }
 
 export const path = '<%= name.toLowerCase() %>/'
@@ -16,4 +17,9 @@ export class Store implements FluxStandardAction<{ items: I<%= name %>Props[]; o
 export class Remove implements FluxStandardAction<I<%= name %>Props> {
   type = path + Types.remove
   constructor(public payload: I<%= name %>Props) {}
+}
+
+export class Clear implements FluxStandardAction<void> {
+  type = path + Types.clear
+  constructor() {}
 }

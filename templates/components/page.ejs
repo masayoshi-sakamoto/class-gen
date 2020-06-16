@@ -1,5 +1,5 @@
 <template>
-  <<%= name %> :value="entities" :options="options" :title="title" @fetch="fetch" @save="save" @destroy="destroy" @update="update"></<%= name %>>
+  <<%= name %> :items="items" :title="title" @fetch="fetch" @save="save" @destroy="destroy""></<%= name %>>
 </template>
 
 <script lang="ts">
@@ -12,10 +12,10 @@ import Delete<%= name %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Delet
 import Update<%= names %>UseCase from '@/usecases/<%= name.toLowerCase() %>/Update<%= names %>UseCase'
 import <%= name %>Entity from '@/entities/<%= name %>'
 import OptionsEntity from '@/entities/Options'
+import { validate } from '@/utils/options'
 
 interface IData {
-  entities: <%= name %>Entity[]
-  options: OptionsEntity | undefined
+  items: I<%= name %>List
   title: string
 }
 
@@ -25,54 +25,50 @@ export default Vue.extend({
     <%= name %>
   },
   async fetch({ App }) {
-    const usecase1 = new Fetch<%= names %>UseCase(App)
-    await Promise.all([usecase1.execute(App.<%= name.toLowerCase() %>.options())])
+    App.state.loading = true
+    const usecase = new Fetch<%= names %>UseCase(App)
+    await usecase.execute(App.<%= name.toLowerCase() %>.options())
+    App.state.loading = false
   },
   data(): IData {
     return {
-      entities: this.App.<%= name.toLowerCase() %>.all(),
-      options: this.App.<%= name.toLowerCase() %>.options(),
+      items: {
+        entities: this.App.<%= name.toLowerCase() %>.all(),
+        options: this.App.<%= name.toLowerCase() %>.options(),
+      },
       title: '<%= japanese %>'
     }
   },
   methods: {
-    async fetch(entity: OptionsEntity) {
-      const usecase = new Fetch<%= names %>UseCase(this.App)
-      const res = await usecase.execute(entity)
-      if (typeof res === 'string') {
-        return this.$router.push(res)
-      }
-      if (res) {
-        this.entities = this.App.<%= name.toLowerCase() %>.all()
-        this.options = this.App.<%= name.toLowerCase() %>.options()
+    async fetch(options: OptionsEntity, reload?: boolean) {
+      if (validate(options, this.App.<%= name.toLowerCase() %>.options()) || reload) {
+        this.App.state.loading = true
+        const usecase = new Fetch<%= names %>UseCase(this.App)
+        if (await usecase.execute(options)) {
+          this.items = {
+            entities: this.App.<%= name.toLowerCase() %>.all(),
+            options: this.App.<%= name.toLowerCase() %>.options()
+          }
+        }
+        this.App.state.loading = false
       }
     },
-    async save(entity: <%= name %>Entity) {
-      const usecase = new Save<%= name %>UseCase(this.App)
-      const res = await usecase.execute(entity)
-      if (typeof res === 'string') {
-        return this.$router.push(res)
-      }
-      if (res) {
-        this.entities = this.App.<%= name.toLowerCase() %>.all()
+    async save(entity: <%= names %>Entity) {
+      const usecase = new Save<%= names %>UseCase(this.App)
+      this.App.state.loading = true
+      if (await usecase.execute(entity)) {
+        this.fetch(this.App.<%= name.toLowerCase() %>.options(), true)
         this.App.state.setDialog('<%= name.toLowerCase() %>', false)
       }
+      this.App.state.loading = false
     },
-    async destroy(entity: <%= name %>Entity) {
-      const usecase = new Delete<%= name %>UseCase(this.App)
-      const res = await usecase.execute(entity)
-      if (typeof res === 'string') {
-        return this.$router.push(res)
+    async destroy(entity: <%= names %>Entity) {
+      const usecase = new Delete<%= names %>UseCase(this.App)
+      this.App.state.loading = true
+      if (await usecase.execute(entity)) {
+        this.fetch(this.App.<%= name.toLowerCase() %>.options(), true)
       }
-      this.entities = this.App.<%= name.toLowerCase() %>.all()
-    },
-    async update(entities: <%= name %>Entity[]) {
-      const usecase = new Update<%= names %>UseCase(this.App)
-      const res = await usecase.execute(entities)
-      if (typeof res === 'string') {
-        return this.$router.push(res)
-      }
-      this.entities = this.App.<%= name.toLowerCase() %>.all()
+      this.App.state.loading = false
     }
   },
   head() {

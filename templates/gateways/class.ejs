@@ -2,7 +2,7 @@ import { <%= appName %>GatewayBase } from './base'
 import { to<%= name %>Props, to<%= name %>Seed } from './translator/<%= name.toLowerCase() %>'
 import { toOptionsProps } from './translator/options'
 import { Get<%= name %>, Get<%= names %>, Post<%= name %>, Put<%= name %>, Delete<%= name %> } from '@/infrastructure/network/<%= appName %>/requests/<%= name.toLowerCase() %>'
-import <%= name %>Entity, { I<%= name %>Props } from '@/entities/<%= name %>'
+import <%= name %>Entity, { I<%= name %>Props, Empty<%= name %>PropsFactory } from '@/entities/<%= name %>'
 import OptionsEntity, { EmptyOptionsPropsFactory, IOptionsProps } from '@/entities/Options'
 
 export default class <%= name %> extends <%= appName %>GatewayBase {
@@ -12,13 +12,12 @@ export default class <%= name %> extends <%= appName %>GatewayBase {
   }
 
   async Get<%= names %>(entity?: OptionsEntity): Promise<{ props: I<%= name %>Props[]; options: IOptionsProps }> {
-    const params = entity ? entity.params : undefined
-    const { <%= names.toLowerCase() %>, options } = await this.apiClient.request(new Get<%= names %>(params))
-    const params = {
+    const { <%= names.toLowerCase() %>, options } = await this.apiClient.request(new Get<%= names %>(entity?.params))
+    const props = {
       props: <%= names.toLowerCase() %> ? <%= names.toLowerCase() %>.map((prop) => to<%= name %>Props(prop)) : [],
       options: options ? toOptionsProps(options) : EmptyOptionsPropsFactory()
     }
-    return params
+    return props
   }
 
   async Post<%= name %>(entity: <%= name %>Entity) {

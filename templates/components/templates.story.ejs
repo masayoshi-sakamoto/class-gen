@@ -42,11 +42,13 @@ export default {
 
 export const Default = () => ({
   components: { Tag },
-  template: '<Tag :value="entities" :options="options" />',
+  template: '<Tag :items="items" />',
   data() {
     return {
-      entities,
-      options
+      items:{
+        entities,
+        options  
+      }
     }
   },
   created() {
@@ -61,10 +63,13 @@ export const Default = () => ({
 
 export const Empty = () => ({
   components: { Tag },
-  template: '<Tag :value="[]" :options="options" />',
+  template: '<Tag :items="items" />',
   data() {
     return {
-      options
+      items:{
+        entities: [],
+        options
+      }
     }
   },
   created() {

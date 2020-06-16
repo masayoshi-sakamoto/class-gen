@@ -1,5 +1,5 @@
 import MeEntity, { EmptyMeEntityFactory } from '@/entities/Me'
-import MenuEntity from '@/entities/Menu'
+import MenuEntity, { menus } from '@/entities/Menu'
 
 export interface IAppState {
   dialog: object
@@ -11,14 +11,15 @@ export interface IAppState {
   url: string
 }
 
-export const state = (): IAppState => ({
+export const state = (props?: Partial<IAppState>): IAppState => ({
   dialog: {},
   drawer: null,
   errors: {},
   loading: false,
   me: EmptyMeEntityFactory(),
-  menus: [],
-  url: '/'
+  menus,
+  url: '/',
+  ...props
 })
 
 export default state

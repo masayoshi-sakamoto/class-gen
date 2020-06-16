@@ -1,7 +1,14 @@
+import OptionsEntity from './Options'
+
 export interface I<%= name %>Props {
   id: string
   <%= title %>: string
   order: number
+}
+
+export interface I<%= name %>List {
+  entities: <%= name %>Entity[]
+  options: OptionsEntity
 }
 
 export default class <%= name %>Entity {

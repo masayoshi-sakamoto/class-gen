@@ -1,47 +1,96 @@
 <template>
   <LayoutApp :title="title">
-    <List<%= name %> :value="value" :options="options" @fetch="fetch" @save="save" @destroy="destroy" @update="update"></List<%= name %>>
+    <v-container fluid>
+      <v-row>
+        <v-col cols="12" sm="4">
+          <v-btn x-large class="font-weight-bold" color="primary" elevation="0" @click.stop="open(null)">
+            <%= japanese %>の追加
+          </v-btn>
+        </v-col>
+        <v-col cols="12" sm="3" md="7">
+          <Counter :value="items.options"></Counter>
+        </v-col>
+        <v-col cols="12" sm="6" md="5">
+          <Search v-model="items.options.props.search" label="検索ワード" @change="fetch"></Search>
+        </v-col>
+      </v-row>
+      <ListHospital :value="items" @change="fetch" @edit="open" @remove="remove"></ListHospital>
+      <Pagination v-model="items.options" @change="fetch"></Pagination>
+    </v-container>
+    <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>登録">
+      <FormHospital v-model="item" @submit="save"></FormHospital>
+    </Dialog>
+    <Destroy v-model="dialog" @destroy="destroy">
+      <v-alert light border="top" colored-border prominent type="error">
+        <div class="title"><%= japanese %>の削除</div>
+        <p class="mt-4"><%= japanese %>を削除します。</p>
+      </v-alert>
+    </Destroy>
   </LayoutApp>
 </template>
 
 <script lang="ts">
 import Vue, { PropType } from 'vue'
-import <%= name %>Entity from '@/entities/<%= name %>'
-import OptionsEntity from '@/entities/Options'
+import <%= name %>Entity, { I<%= name %>List, Empty<%= name %>EntityFactory } from '@/entities/<%= name %>'
 import LayoutApp from '@/components/organisms/Layout/App'
 import List<%= name %> from '@/components/organisms/List/<%= name %>'
+import Form<%= name %> from '@/components/organisms/Form/<%= name %>'
+import Counter from '@/components/molecules/Counter'
+import Search from '@/components/molecules/Search'
+import Pagination from '@/components/molecules/Pagination'
+import Dialog from '@/components/molecules/Dialog'
+import Destroy from '@/components/molecules/Destroy'
+
+interface IData {
+  item: <%= name %>Entity
+  dialog: boolean
+}
 
 export default Vue.extend({
   components: {
     LayoutApp,
-    List<%= name %>
+    List<%= name %>,
+    Form<%= name %>,
+    Counter,
+    Search,
+    Pagination,
+    Dialog,
+    Destroy
   },
   props: {
     title: {
       type: String,
       default: ''
     },
-    value: {
-      type: Array as PropType<<%= name %>Entity[]>,
-      required: true
-    },
-    options: {
-      type: Object as PropType<OptionsEntity>,
+    items: {
+      type: Object as PropType<I<%= name %>List>,
       required: true
     }
   },
+  data(): IData {
+    return {
+      item: Empty<%= name %>EntityFactory(),
+      dialog: false
+    }
+  },
   methods: {
-    fetch(entity: OptionsEntity) {
-      this.$emit('fetch', entity)
+    open(entity: <%= name %>Entity | null) {
+      this.item = entity || Empty<%= name %>EntityFactory()
+      this.App.state.setDialog('<%= name.toLowerCase() %>', true)
+    },
+    fetch() {
+      this.$emit('fetch', this.items.options)
     },
     save(entity: <%= name %>Entity) {
       this.$emit('save', entity)
     },
-    destroy(entity: <%= name %>Entity) {
-      this.$emit('destroy', entity)
+    remove(entity: <%= name %>Entity) {
+      this.dialog = true
+      this.item = entity
     },
-    update(entities: <%= name %>Entity[]) {
-      this.$emit('update', entities)
+    destroy() {
+      this.dialog = false
+      this.$emit('destroy', this.item)
     }
   }
 })

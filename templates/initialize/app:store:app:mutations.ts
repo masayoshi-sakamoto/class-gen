@@ -19,6 +19,9 @@ const mutations: MutationTree<IAppState> = {
       state.errors = action.payload
     }
   },
+  [Types.expired]: (state, action: Expired) => {
+    state.expired = action.payload
+  },
   [Types.loading]: (state, action: Loading) => {
     state.loading = action.payload
   },
@@ -31,11 +34,8 @@ const mutations: MutationTree<IAppState> = {
   [Types.url]: (state, action: Url) => {
     state.url = action.payload
   },
-  [Types.refresh]: (state, _) => {
-    const props = init()
-    Object.keys(props).forEach((key) => {
-      state[key] = props[key]
-    })
+  [Types.clear]: (state) => {
+    Object.assign(state, init())
   }
 }
 

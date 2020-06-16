@@ -8,7 +8,7 @@ export default class MeUseCase implements BaseUseCase {
     this.app = app
   }
 
-  async execute(): Promise<boolean | string> {
+  async execute(): Promise<boolean> {
     const { state, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       state.me = new MeEntity(await <%= appName.toLowerCase() %>Gateway.Auth.Me())

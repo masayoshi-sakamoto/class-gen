@@ -5,7 +5,10 @@ import { menus } from '@/entities/Menu'
 
 const authenticated: Middleware = async ({ App, redirect, route }: Context) => {
   try {
-    App.state.token = await App.<%= appName.toLowerCase() %>Gateway.Auth.Refresh()
+    const now = new Date().getTime()
+    if (App.state.expired !== 0 && now > App.state.expired) {
+      App.state.token = await App.<%= appName.toLowerCase() %>Gateway.Auth.Refresh()
+    }
 
     if (App.state.token === '') {
       App.state.refresh()

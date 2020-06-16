@@ -36,4 +36,12 @@ export default class <%= name %>Repository {
     const props = this._store.state.<%= name.toLowerCase() %>.options
     return props ? EmptyOptionsEntityFactory(props) : EmptyOptionsEntityFactory()
   }
+
+  items(): { text: string; value: any }[] {
+    return this.all().map((prop) => ({ text: prop.name, value: prop.id }))
+  }
+
+  clear() {
+    this._store.commit(new types.Clear())
+  }
 }

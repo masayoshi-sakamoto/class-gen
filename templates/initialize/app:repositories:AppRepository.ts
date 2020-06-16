@@ -38,6 +38,10 @@ export default class AppRepository {
     return this._store.state.app.errors
   }
 
+  get expired(): number {
+    return this._store.state.app.expired
+  }
+
   set loading(value: boolean) {
     this._store.commit(new types.Loading(value))
   }
@@ -71,6 +75,9 @@ export default class AppRepository {
     if (value === '') {
       this.cookies.remove('accessToken')
     } else {
+      const date = new Date()
+      date.setMinutes(date.getMinutes() + 3)
+      this._store.commit(new types.Expired(date.getTime()))
       this.cookies.set('accessToken', value, { maxAge: 60 * 30 })
     }
   }
@@ -80,10 +87,10 @@ export default class AppRepository {
   }
 
   set url(value: string) {
-    this._store.commit(new types.Url(value))
+    this.cookies.set('url', value, { maxAge: 60 })
   }
 
   get url(): string {
-    return this._store.state.app.url
+    return this.cookies.get('url')
   }
 }

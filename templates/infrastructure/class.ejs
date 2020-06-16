@@ -20,7 +20,7 @@ export class Get<%= names %> implements APIRequest<<%= appName %>.<%= name %>.ge
   method = HTTPMethod.GET
   params: IParamsProps | undefined
   constructor(params?: IParamsProps) {
-    this.params = params ? params : undefined
+    this.params = params
     this.path = '/<%= names.toLowerCase() %>'
   }
 }

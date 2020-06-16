@@ -1,5 +1,5 @@
 import { I<%= name %>Props } from '@/entities/<%= name %>'
-import { IOptionsProps } from '@/entities/Options'
+import { IOptionsProps, EmptyOptionsPropsFactory } from '@/entities/Options'
 
 export interface I<%= name %>State {
   byIds: {
@@ -10,14 +10,7 @@ export interface I<%= name %>State {
 
 export const state = (): I<%= name %>State => ({
   byIds: {},
-  options: {
-    total: 0,
-    page: 1,
-    itemsPerPage: 20,
-    pageCount: 0,
-    sortBy: [],
-    sortDesc: []
-  }
+  options: EmptyOptionsPropsFactory()
 })
 
 export default state

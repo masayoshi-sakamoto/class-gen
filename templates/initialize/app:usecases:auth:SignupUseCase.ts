@@ -8,7 +8,7 @@ export default class SignupUseCase implements BaseUseCase {
     this.app = app
   }
 
-  async execute(entity: SignupEntity): Promise<string | boolean> {
+  async execute(entity: SignupEntity): Promise<boolean> {
     const { state, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
       state.token = await <%= appName.toLowerCase() %>Gateway.Auth.Signup(entity)

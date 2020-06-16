@@ -17,12 +17,15 @@ export default Vue.extend({
   },
   methods: {
     async login(entity: LoginEntity) {
-      const usecase = new LoginUseCase(this.App)
-      this.App.state.loading = true
-      const url = await usecase.execute(entity)
-      this.App.state.loading = false
-      if (typeof url === 'string') {
-        this.$router.push(url)
+      try {
+        const usecase = new LoginUseCase(this.App)
+        this.App.state.loading = true
+        this.$router.push(await usecase.execute(entity))
+      } catch (error) {
+        this.App.state.loading = false
+        if (error.statusCode === 401) {
+          this.App.state.errors = { message: 'IDまたはパスワードが違います' }
+        }
       }
     }
   },

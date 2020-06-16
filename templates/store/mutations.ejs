@@ -7,9 +7,7 @@ const mutations: MutationTree<I<%= name %>State> = {
   [Types.store]: (state, action: Store) => {
     const { items, options } = action.payload
     if (items.length === 0) {
-      delete state.byIds
-      state.byIds = init().byIds
-      state.options = init().options
+      Object.assign(state, init())
     } else {
       items.forEach((prop) => {
         state.byIds = {
@@ -24,6 +22,9 @@ const mutations: MutationTree<I<%= name %>State> = {
     const prop = action.payload
     if (!state.byIds[prop.id]) return
     Vue.delete(state.byIds, prop.id)
+  },
+  [Types.clear]: (state) => {
+    Object.assign(state, init())
   }
 }
 

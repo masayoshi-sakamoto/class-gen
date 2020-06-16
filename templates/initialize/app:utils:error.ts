@@ -6,7 +6,7 @@ export async function errors(error: any, App: IApp, logService: LogService): Pro
     await logService.handle({ type: LogType.Error, error })
     App.state.errors = { message: '不正なエラーが発生しました。' }
   } else if (error.status === 401) {
-    return '/logout'
+    throw new AuthenticationException(error.raw.response.data.message)
   } else if (error.status === 422 || error.status === 429) {
     App.state.errors = error.raw.response.data.errors
   } else if (error.status === 404) {
@@ -20,5 +20,11 @@ export async function errors(error: any, App: IApp, logService: LogService): Pro
 class NotFoundException {
   constructor(message: string) {
     return { message, statusCode: 404 }
+  }
+}
+
+class AuthenticationException {
+  constructor(message: string) {
+    return { message, statusCode: 401 }
   }
 }

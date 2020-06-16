@@ -1,6 +1,6 @@
 <template>
   <LayoutApp>
-    <v-container class="text-center pt-10">
+    <v-container v-if="error.statusCode !== 401" class="text-center pt-10">
       <h1 v-if="error.statusCode === 404">
         {{ pageNotFound }}
       </h1>
@@ -8,9 +8,7 @@
         {{ otherError }}
       </h1>
       <div class="mt-10">
-        <NuxtLink to="/">
-          トップページに戻る
-        </NuxtLink>
+        <nuxt-link to="/">トップページに戻る</nuxt-link>
       </div>
     </v-container>
   </LayoutApp>
@@ -33,11 +31,17 @@ export default Vue.extend({
   data() {
     return {
       pageNotFound: 'お探しのページは見つかりません',
-      otherError: 'エラー'
+      otherError: 'システムエラー'
+    }
+  },
+  created() {
+    this.App.state.url = this.$route.fullPath
+    if (this.error.statusCode === 401) {
+      this.$router.push('/logout')
     }
   },
   head() {
-    const title = this.error.statusCode === 404 ? 'お探しのページは見つかりません' : 'エラー'
+    const title = this.error.statusCode === 404 ? 'お探しのページは見つかりません' : 'システムエラー'
     return {
       title
     }

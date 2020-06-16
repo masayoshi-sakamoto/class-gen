@@ -57,3 +57,12 @@ export class Me implements APIRequest<<%= appName %>.Auth.getMeResponse> {
   }
 }
 
+export class Logout implements APIRequest<<%= appName %>.Auth.autLogoutResponse> {
+  response: <%= appName %>.Auth.autLogoutResponse
+  path: string
+  contentType = 'application/json'
+  method = HTTPMethod.GET
+  constructor() {
+    this.path = '/logout'
+  }
+}

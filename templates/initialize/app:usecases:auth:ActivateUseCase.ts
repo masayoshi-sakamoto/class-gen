@@ -7,15 +7,12 @@ export default class ActivateUseCase implements BaseUseCase {
     this.app = app
   }
 
-  async execute(invitationId: string): Promise<boolean | string> {
+  async execute(invitationId: string): Promise<boolean> {
     const { state, <%= appName.toLowerCase() %>Gateway, logService } = this.app
     try {
-      state.loading = true
       const res = await <%= appName.toLowerCase() %>Gateway.Auth.Activate(invitationId)
-      state.loading = false
       return res
     } catch (error) {
-      state.loading = false
       return await errors(error, this.app, logService)
     }
   }
