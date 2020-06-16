@@ -35,6 +35,7 @@ export default Vue.extend({
     }
   },
   created() {
+    this.App.state.loading = false
     this.App.state.url = this.$route.fullPath
     if (this.error.statusCode === 401) {
       this.$router.push('/logout')
