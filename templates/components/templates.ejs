@@ -2,8 +2,8 @@
   <LayoutApp :title="title">
     <v-container fluid>
       <v-row>
-        <v-col cols="12" sm="4">
-          <v-btn x-large class="font-weight-bold" color="primary" elevation="0" @click.stop="open(null)">
+        <v-col cols="12">
+          <v-btn class="font-weight-bold" color="primary" min-width="200" elevation="0" tile @click.stop="open(null)">
             <%= japanese %>の追加
           </v-btn>
         </v-col>
@@ -14,11 +14,11 @@
           <Search v-model="items.options.props.search" label="検索ワード" @change="fetch"></Search>
         </v-col>
       </v-row>
-      <ListHospital :value="items" @change="fetch" @edit="open" @remove="remove"></ListHospital>
+      <List<%= name %> :value="items" @change="fetch" @edit="open" @remove="remove"></List<%= name %>>
       <Pagination v-model="items.options" @change="fetch"></Pagination>
     </v-container>
     <Dialog type="<%= name.toLowerCase() %>" title="<%= japanese %>登録">
-      <FormHospital v-model="item" @submit="save"></FormHospital>
+      <Form<%= name %> v-model="item" @submit="save"></Form<%= name %>>
     </Dialog>
     <Destroy v-model="dialog" @destroy="destroy">
       <v-alert light border="top" colored-border prominent type="error">
