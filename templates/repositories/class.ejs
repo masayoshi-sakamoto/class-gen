@@ -38,7 +38,7 @@ export default class <%= name %>Repository {
   }
 
   items(): { text: string; value: any }[] {
-    return this.all().map((prop) => ({ text: prop.name, value: prop.id }))
+    return this.all().map((prop) => ({ text: prop.<%= name.toLowerCase() %>, value: prop.id }))
   }
 
   clear() {
