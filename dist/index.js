@@ -152,7 +152,8 @@ function repositories(className) {
     init();
     const dist = makeDir(commander.dist, type);
     const name = className.charAt(0).toUpperCase() + className.slice(1);
-    generator({ type, dist, name, outfile: name + 'Repository', options: { name } });
+    const title = commander.title === undefined ? 'title' : commander.title;
+    generator({ type, dist, name, outfile: name + 'Repository', options: { name, title } });
 }
 function gateways(className) {
     let type = 'gateways';
